@@ -37,10 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'DAO.category',
-    'DAO.details',
-    'DAO.filter',
-    'DAO.product'
+    'app'
 ]
 
 MIDDLEWARE = [
