@@ -1,0 +1,64 @@
+{    
+    "Screen" : {"patterns" : ["(1[23456789]\\.[1-9](\"|″) ?((HD)|(FHD)|(Full HD)|(FULL HD)))"], "formats" : ["{0}"]},
+    
+    "SSD" : {"patterns": ["([1-9]\\d\\d) [Gg][oObB] [Ss][Ss][dD]"], "formats":["{0} GB"]},
+
+    "Hard disk" : {"patterns" : [" ([1-9]) ?(T(O|o|b|B)) ",
+                                "([1-9][0-9]+) ?(T(O|o|b|B))",
+                                "([0-9]+)(\\.|,)([0-9]) ?(T(O|o|b|B))"],
+                                "formats" : ["{0} TB","{0} TB", "{0}.{2} TB"] },
+
+    "Generation" : {"patterns" : ["((I|i)[3579] ?- ?([1-9]\\d?)\\d\\d\\d[A-Z]{0,2})"], "formats" : ["{2}th Gen"]},
+
+    "Processor" : {"patterns" : ["(AMD.*?[XA]([1-9]|(10))(-|\\s)[0-9]{4}(e\/b)?)",
+                                 "(AMD.*?[0-9][GXgx])",
+                                 "(AMD.*?[0-9]{4}[GXKWgxkw][XTxt*]?(.*?(\\(GM\\)))?)",
+                                 "((AMD)?.*?((Ryzen)|(RYZEN)|(Phenom)|(PHENOM)|(Athlon)|(ATHLON)|(Threadripper)|(THREADRIPPER)).*?[753].*?[0-9]{4}([GXgx]?[*Tt])?)",
+                                 "(AMD.*?[0-9]{3}GE)",
+
+                                 "((I|i)[3579] ?- ?[1-9]\\d?\\d\\d\\d[A-Z\/]{0,2}[0-9]?)",
+                                 "([EW][357]? ?- ?[1-9]\\d\\d\\d[A-Z]? ?([vV][1-9])?)",
+                                 "([Mm][3579]?-[1-9][0-9A-Z]\\d\\d[a-zA-Z]?)",
+                                 "((([cC]eleron)|((CELERON))).{0,2}([A-Z]?\\d\\d\\d\\d[A-Z]?))",
+                                 "((([pP]entium)|(PENTIUM)).{0,2}?([A-Z]?\\d\\d\\d\\d[A-Z]?))",
+                                 "((([Aa]tom)|(ATOM)).{0,2}?([A-Z]?\\d\\d\\d\\d[A-Z]?))"
+                                 ], "formats" : ["{0}", "{0}", "{0}", "{0}", "{0}", "Intel® Core™ {0}", "Intel® Xeon® {0}", "Intel® Core™ {0}",
+                                    "Intel® Celeron® {5}", "Intel® Pentium® {5}",  "Intel® Atom® {5}"]},
+
+    "Pixels" : {"patterns": ["([1-9]\\d{3})( ?x|X ?)([1-9]\\d{2,3})"], "formats": ["{0} x {2}"]},
+
+    "RAM" : {"patterns" : ["RAM.{0,2}?(([0-9]|(12)|(10)|(16)|(20)|(24)|(32)|(64)|(128))).{0,2}((GO|o)|(go))",
+                            "((M.MOIRE)|(M.moire)|(m.moire)|(memory))(.{0,2}?)([1-9]\\d?)((G|g)((B|b)|(o|O)))"], "formats" : ["{0} GB", "{6} GB"]},
+    
+    "RAM Type" : {"patterns": [" DDR ?([3456])"], "formats": ["DDR{0}"]},
+
+    "CPU Freqency" : {"patterns": ["([1-6]((\\.)|,)\\d\\d?) ?GH(Z|z).*?([1-6]((\\.)|,)\\d\\d?) ?GH(Z|z)", "([1-6]((\\.)|,)\\d\\d?) ?GH(Z|z)"], "formats" : ["{0} GHz Up to {4} GHz", "{0} GHz"]},
+    "SKU" : {"patterns": ["([A-Z0-9]{16,})"], "formats": ["{0}"]},
+
+    "OS" : {"patterns": ["((FreeDOS)|(FreeDos)|(FREEDOS)|(freedos))",
+                            "((w|Windows)|(WINDOWS)) ?(\\d\\d) ?([pP][rR][oO])",
+                            "((w|Windows)|(WINDOWS)) ?(\\d\\d) ?([hH][oO][mM][eE])",
+                            "((w|Windows)|(WINDOWS)) ?(\\d\\d)",
+                            "((w|Windows)|(WINDOWS))",
+                            "(((l|L)inux)|(LINUX))",
+                            "((MacOS)|(MAC))"],
+                            "formats" : ["FreeDos",
+                                        "Windows {3} Pro", "Windows {3} Home","Windows {3}", "Windows",
+                                        "Linux", "MacOS X"]},
+    
+    "Warranty" : {"patterns": ["([1234]) ?([Aa][Nn]([Ss]?))|([Yy][eE][Aa][rR]([Ss]?))"], "formats": ["{0} Year(s)"]},
+    
+    "Color" : {"patterns": [
+                            "([Ss][iI][lL][Vv][Ee][Rr])|([Aa][rR][gG][eE][nN][Tt])",
+                            "([Nn][oO][iI][rR])|([bB][lL][aA][cK])",
+                            "[Gg][rR](([eE][yY])|([iI][Ss]))",
+                            "([Mm][aA][rR][rR]?[oO][nN])|([Bb][Rr][Oo][Ww][Nn])",
+                            "([Bb][lL]([eE][uU])|([uU][eE]))",
+                            "(( |:)[oO][rR] )|([gG][oO][lL][dD])",
+                            "([Rr][eE][dD])|([Rr][oO][uU][gG][eE])"
+                            ], "formats": ["Silver", "Black", "Grey", "Brown", "Blue", "Gold", "Red"]},
+
+    "Graphics Card" : {"patterns": ["Intel®? HD Graphics", "NVIDIA QUADRO P3000"], "formats" : []},
+    "Screen Freqency" : {"patterns": ["([1-9]\\d\\d?)Hz"], "formats":["{0}Hz"]},
+    "CPU cache" : {"patterns": ["([12]?\\d(\\.\\d\\d?)?) ?[Mm][oObB]?"], "formats":["{0} MB"]}
+}
