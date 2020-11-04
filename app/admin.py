@@ -9,5 +9,6 @@ admin.site.register(Vendor)
 admin.site.register(StartUrl)
 admin.site.register(Product)
 admin.site.register(ProductVendorDetails)
+admin.site.register(ProductImage)
 
 

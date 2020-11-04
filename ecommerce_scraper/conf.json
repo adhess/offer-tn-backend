@@ -46,7 +46,7 @@
                                         "Windows {3} Pro", "Windows {3} Home","Windows {3}", "Windows",
                                         "Linux", "MacOS X"]},
     
-    "Warranty" : {"patterns": ["([1234]) ?([Aa][Nn]([Ss]?))|([Yy][eE][Aa][rR]([Ss]?))"], "formats": ["{0} Year(s)"]},
+    "Warranty" : {"patterns": ["([1-9]) ?([Aa][Nn]([Ss]?))|([Yy][eE][Aa][rR]([Ss]?))"], "formats": ["{0} Year(s)"]},
     
     "Color" : {"patterns": [
                             "([Ss][iI][lL][Vv][Ee][Rr])|([Aa][rR][gG][eE][nN][Tt])",
