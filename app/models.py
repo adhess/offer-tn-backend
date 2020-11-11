@@ -6,11 +6,12 @@ from django.utils.translation import gettext_lazy as _
 class Vendor(models.Model):
     name = models.CharField(max_length=50)
     website = models.CharField(max_length=255)
+    logo_url = models.TextField()
 
 
 class Category(MPTTModel):
     name = models.CharField(max_length=50)
-    parent = TreeForeignKey('self', on_delete=models.CASCADE, blank=True, related_name='children')
+    parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
 
 
 class Product(models.Model):
@@ -25,19 +26,18 @@ class Product(models.Model):
 class Filter(models.Model):
     characteristics = models.JSONField()
     # characteristics = {cpu: "checkbox"}
-    category = models.ForeignKey("Category", on_delete=models.CASCADE, related_name='filters')
+    category = models.OneToOneField("Category", on_delete=models.CASCADE, related_name='filters')
 
 
 class ProductVendorDetails(models.Model):
-
     class InventoryState(models.TextChoices):
         IN_STOCK = 'IS', _('In stock')
         OUT_OF_STOCK = 'OOS', _('Out of stock')
         IN_TRANSIT = 'IT', _('In transit')
         ON_COMMAND = 'OC', _('On command')
 
-    product = models.ForeignKey("Product", on_delete=models.CASCADE, related_name="product_from_all_vendors")
-    vendor = models.ForeignKey("Vendor", on_delete=models.CASCADE, related_name="products")
+    product = models.ForeignKey("Product", on_delete=models.CASCADE, related_name='details')
+    vendor = models.ForeignKey("Vendor", on_delete=models.CASCADE)
     url = models.URLField()
     unit_price = models.FloatField()
     discount_available = models.BooleanField(default=False)
@@ -51,13 +51,11 @@ class ProductVendorDetails(models.Model):
 
 class ProductImage(models.Model):
     src = models.URLField()
-    product = models.ForeignKey('ProductVendorDetails', on_delete=models.CASCADE, related_name='images')
-    vendor = models.ForeignKey('Vendor', on_delete=models.CASCADE, related_name='images')
+    product_details = models.ForeignKey('ProductVendorDetails', null=True, blank=True, on_delete=models.CASCADE,
+                                        related_name='images')
 
 
 class StartUrl(models.Model):
     url = models.URLField()
     category = models.ForeignKey("Category", on_delete=models.CASCADE, related_name='start_urls')
     vendor = models.ForeignKey("Vendor", on_delete=models.CASCADE, related_name='start_urls')
-
-
