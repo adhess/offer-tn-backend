@@ -12,3 +12,6 @@ python3 manage.py migrate
 
 ## populate database 
 `python3 manage.py populate_db`
+
+## install dependency
+`pipenv install`
