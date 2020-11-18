@@ -3,6 +3,7 @@ from app.models import Product
 from app.models import Category
 from rest_framework import viewsets, permissions
 from .serializers import ProductSerializers, CategorySerializer
+from rest_framework.decorators import action
 
 
 class ProductsViewSet(viewsets.ModelViewSet):
@@ -11,16 +12,26 @@ class ProductsViewSet(viewsets.ModelViewSet):
     permission_classes = [
         permissions.AllowAny
     ]
+    ordering_fields = ['popularity']
 
     def get_queryset(self):
-        category_name = self.request.query_params.get('category_name')
-        category_involved = [p.id for p in list(
-            Category.objects.filter(
-                Q(children__isnull=True),
-                Q(parent__parent__name=category_name) | Q(parent__name=category_name) | Q(name=category_name)
-            )
-        )]
-        return Product.objects.filter(category__in=category_involved)
+        category_id = self.request.query_params.get('category_id')
+        print(category_id)
+        order = self.request.query_params.get('ordering')
+        if category_id is None:
+            return Product.objects.all().order_by('-popularity')
+        if category_id is not None:
+            category_involved = [p.id for p in list(
+                Category.objects.filter(
+                    Q(children__isnull=True),
+                    Q(parent__parent_id=category_id) | Q(parent_id=category_id) | Q(id=category_id)
+                )
+            )]
+            if order is None:
+                return Product.objects.filter(category__in=category_involved)
+            else:
+                return Product.objects.filter(category__in=category_involved).order_by(order)
+
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
