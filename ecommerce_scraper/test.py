@@ -59,13 +59,17 @@ Référence 81N300LWFG Ecran 15.6" HD LED - Processeur: Dual-Core AMD A6-9225 (2
 """
 
 string_Mytek_2 = """
-Ecran: 13.3" FULL HD (1920 x 1088 Pixels) - Processeur: Intel Core™ i7-8550U 8ème Génération (1.8 GHz, jusqu'à 4.0 GHz, 8 Mo de mémoire cache, Quad-Core) - Systéme d'exploitation: Windows 10 Pro - Mémoire RAM: 8 Go SDRAM DDR4-2400 - Disque Dur: 256 Go SSD - Carte Graphique: Intel HD Graphics avec USB 3.1, HDMI, RJ-45 - Bluetooth 4.2 - Poids: 1.33 Kg - Couleur: Silver - Garantie: 3 ans
-"""
+GAMER Non SYSTEME D'EXPLOITATION MacOS PROCESSEUR Intel Core i7 Type Processeur Quad-Core Frequence Processeur 2.6 GHz Mémoire Cache 6 Mo Capacité de Batterie jus
+qu'à 10 heures d'autonomie Type de Batterie Lithium-Polymère MEMOIRE 16 Go Vitesse Memoire 1600 MHz Type Memoire DDR3 Lecteur de Carte Mémoire carte SD, carte SDHC
+, carte SDXC TAILLE DE L'ECRAN 15.4 Pouces Ecran LED HD Résolution Ecran 2880 x 1800 pixels ECRAN TACTILE Non DISQUE DUR 256 Go SSD CARTE GRAPHIQUE AMD Radeon Type
+ Disque Dur SSD CONNECTIVITE SANS-FIL Wi-Fi Type Carte Graphique AMD Radeon Pro 450 Audio HP intégrés Connecteurs 4 ports USB 3.1 Type C / Thunderbolt 3 avec prise
+ en charge du signal DisplayPort Formats 35,89 x 24,71 x 1,8 cm Bluetooth Bluetooth 4.2 GARANTIE 1 an
+  """
 
 for element, element_format in settings.items():
     for i, pattern in enumerate(element_format['patterns']):
         cp = re.compile(pattern)
-        curr_match = cp.search(string_jumia_2)
+        curr_match = cp.search(string_Mytek_2)
         if curr_match:
             result = element_format['formats'][i].format(*(curr_match.groups()))
             print(element + ' : ' + result)

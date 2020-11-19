@@ -1,7 +1,7 @@
 from django.db.models import Q
-from app.models import Product
-from app.models import Category
 from rest_framework import viewsets, permissions
+
+from .models import Category, Product
 from .serializers import ProductSerializers, CategorySerializer
 
 

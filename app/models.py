@@ -58,4 +58,5 @@ class ProductImage(models.Model):
 class StartUrl(models.Model):
     url = models.URLField()
     category = models.ForeignKey("Category", on_delete=models.CASCADE, related_name='start_urls')
+    product_type = models.ForeignKey("Category", on_delete=models.CASCADE)
     vendor = models.ForeignKey("Vendor", on_delete=models.CASCADE, related_name='start_urls')

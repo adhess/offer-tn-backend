@@ -1,12 +1,8 @@
 import random
 
 from django.core.management.base import BaseCommand
-from app.models import Category, Vendor, ProductImage
-from app.models import Product
-from app.models import Filter
-from app.models import ProductVendorDetails
-
-from .mock_data import mock_data
+from app.models import *
+from app.management.commands.mock_data import mock_data
 import string
 
 
