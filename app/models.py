@@ -11,6 +11,8 @@ class Vendor(models.Model):
 
 class Category(MPTTModel):
     name = models.CharField(max_length=50)
+    icon = models.CharField(max_length=150)
+    active = models.BooleanField()
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
 
 
@@ -20,7 +22,8 @@ class Product(models.Model):
     characteristics = models.JSONField()
     popularity = models.IntegerField(null=True)
     category = models.ForeignKey("Category", on_delete=models.CASCADE, related_name='products')
-    one_image = models.OneToOneField("ProductImage", on_delete=models.CASCADE, related_name='image_product')
+    image_url = models.TextField()
+    min_registered_prices = models.JSONField()
 
 
 class Filter(models.Model):
@@ -47,12 +50,6 @@ class ProductVendorDetails(models.Model):
         choices=InventoryState.choices,
         default=InventoryState.IN_STOCK,
     )
-
-
-class ProductImage(models.Model):
-    src = models.URLField()
-    product_details = models.ForeignKey('ProductVendorDetails', null=True, blank=True, on_delete=models.CASCADE,
-                                        related_name='images')
 
 
 class StartUrl(models.Model):
