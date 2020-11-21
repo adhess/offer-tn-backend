@@ -1,6 +1,11 @@
 
 # Backend
 
+## install dependency
+`pip install pipenv`
+`pipenv install`
+`pipenv shell`
+
 ## flush database
 `python3 manage.py flush`
 
@@ -12,6 +17,3 @@ python3 manage.py migrate
 
 ## populate database 
 `python3 manage.py populate_db`
-
-## install dependency
-`pipenv install`
