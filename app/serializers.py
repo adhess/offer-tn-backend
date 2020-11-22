@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from app.models import Category, ProductImage, Vendor
+from app.models import Category,  Vendor
 from app.models import Product
 from app.models import ProductVendorDetails
 from app.models import Filter
@@ -13,13 +13,9 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ['id', 'name', 'children']
+        fields = ['id', 'name', 'children', 'icon', 'active']
 
 
-class ProductImageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ProductImage
-        fields = ['src']
 
 
 class VendorSerializer(serializers.ModelSerializer):
@@ -30,7 +26,6 @@ class VendorSerializer(serializers.ModelSerializer):
 
 class ProductVendorDetailsSerializers(serializers.ModelSerializer):
     vendor = VendorSerializer(many=False, read_only=True)
-    images = ProductImageSerializer(many=True, read_only=True)
 
     class Meta:
         model = ProductVendorDetails
@@ -39,7 +34,6 @@ class ProductVendorDetailsSerializers(serializers.ModelSerializer):
 
 class ProductSerializers(serializers.ModelSerializer):
     details = ProductVendorDetailsSerializers(many=True, read_only=True)
-    one_image = ProductImageSerializer(many=False, read_only=True)
 
     class Meta:
         model = Product

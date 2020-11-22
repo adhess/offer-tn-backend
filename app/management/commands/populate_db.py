@@ -2,7 +2,8 @@ import random
 
 from django.core.management.base import BaseCommand
 from app.models import *
-from app.management.commands.mock_data import mock_data
+
+from .mock_data import mock_data
 import string
 
 

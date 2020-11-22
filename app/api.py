@@ -1,8 +1,6 @@
 from django.db.models import Q
 from rest_framework import viewsets, permissions
-
-from .models import Category, Product
-from .serializers import ProductSerializers, CategorySerializer
+from app.serializers import *
 
 
 class ProductsViewSet(viewsets.ModelViewSet):
