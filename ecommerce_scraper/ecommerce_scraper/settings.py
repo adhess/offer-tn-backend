@@ -14,8 +14,11 @@ NEWSPIDER_MODULE = 'ecommerce_scraper.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-USER_AGENT = 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'
+# USER_AGENT = 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'
 FEED_EXPORT_ENCODING = 'utf-8'
+
+# PROXY_POOL_ENABLED = True
+
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
@@ -32,7 +35,7 @@ ROBOTSTXT_OBEY = False
 #CONCURRENT_REQUESTS_PER_IP = 16
 
 # Disable cookies (enabled by default)
-#COOKIES_ENABLED = False
+COOKIES_ENABLED = False
 
 # Disable Telnet Console (enabled by default)
 #TELNETCONSOLE_ENABLED = False
@@ -52,9 +55,16 @@ ROBOTSTXT_OBEY = False
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
-#    'ecommerce_scraper.middlewares.EcommerceScraperDownloaderMiddleware': 543,
-#}
+DOWNLOADER_MIDDLEWARES = {
+   # 'ecommerce_scraper.middlewares.EcommerceScraperDownloaderMiddleware': 543,
+   #'scrapy_proxy_pool.middlewares.ProxyPoolMiddleware': 610,
+   #'scrapy_proxy_pool.middlewares.BanDetectionMiddleware': 620,
+   'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
+   'scrapy_user_agents.middlewares.RandomUserAgentMiddleware': 400,
+
+}
+
+
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html

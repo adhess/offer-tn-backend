@@ -34,7 +34,7 @@
     "ram_type" : {"patterns": [" DDR ?([3456])"], "formats": ["DDR{0}"]},
 
     "cpu_frequency" : {"patterns": ["([1-6]((\\.)|,)\\d\\d?) ?GH(Z|z).*?([1-6]((\\.)|,)\\d\\d?) ?GH(Z|z)", "([1-6]((\\.)|,)\\d\\d?) ?GH(Z|z)"], "formats" : ["{0} GHz Up to {4} GHz", "{0} GHz"]},
-
+    "reference" : {"patterns": ["([A-Z0-9]{16,})"], "formats": ["{0}"]},
     "os" : {"patterns": ["((FreeDOS)|(FreeDos)|(FREEDOS)|(freedos))",
       "((w|Windows)|(WINDOWS)) ?(\\d\\d) ?([pP][rR][oO])",
       "((w|Windows)|(WINDOWS)) ?(\\d\\d) ?([hH][oO][mM][eE])",

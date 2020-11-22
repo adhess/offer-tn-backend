@@ -24,10 +24,10 @@ class MytekSpider(scrapy.Spider):
         yield from response.follow_all(product_links,
                                        callback=self.parse_product,
                                        cb_kwargs=dict(category=category, item=item))
-        pagination_link = response.css(self.pagination_selector)
-        yield from response.follow_all(pagination_link,
-                                       callback=self.parse,
-                                       cb_kwargs=dict(category=category, item=item))
+        # pagination_link = response.css(self.pagination_selector)
+        # yield from response.follow_all(pagination_link,
+        #                                callback=self.parse,
+        #                                cb_kwargs=dict(category=category, item=item))
 
     # def parse_laptop(self, response, category=None):
     #     laptop = items.LaptopItem()
@@ -52,18 +52,18 @@ class MytekSpider(scrapy.Spider):
 
     def parse_product(self, response, category: str, item: str):
         product = getattr(items, f'{item.capitalize()}Item')()
-        product['name'] = response.css(self.name_selector).get()
-        product['reference'] = response.css(self.ref_selector).get()
+        product['name'] = self.get_field(response, self.name_selector).get()
+        product['reference'] = self.get_field(response, self.ref_selector).get()
         product["category"] = category
         product["url"] = response.url
-        product["image"] = response.css(self.image_selector).get()
-        product["price"] = response.css(self.price_selector).get()
-        specs = ', '.join(response.css(self.specs_selector).re('<[^>]*>([^<]*)<'))
-        field_re = getattr(self, 'product_re')[item.lower()]
+        product["image"] = self.get_field(response, self.image_selector).get() # TODO scrape all product images, not just one
+        product["price"] = self.rchop(self.get_field(response, self.price_selector).get(), 'TND')
+        specs = ', '.join(self.get_field(response, self.specs_selector).re('<[^>]*>([^<]*)<'))
+        field_re = self.product_re[item.lower()]
         for field in product.fields:
             if not product.get(field):
                 patterns, formats = field_re[field].values()
-                for i, (pattern, product_format) in enumerate(zip(patterns, formats)):
+                for pattern, product_format in zip(patterns, formats):
                     cp = re.compile(pattern)
                     curr_match = cp.search(specs)
                     if curr_match:
@@ -71,6 +71,13 @@ class MytekSpider(scrapy.Spider):
                         break
         yield product
 
+    def rchop(self, s, *sub):
+        return s[:-len(sub)] if s.endswith(sub) else s
+
+    def get_field(self, response, selector=None):
+        if selector is None:
+            return
+        return response.css(selector)
 
 
     def errback_httpbin(self, failure):

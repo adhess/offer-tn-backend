@@ -18,12 +18,14 @@ class EcommerceScraperPipeline:
 class JsonWriterPipeline:
 
     def open_spider(self, spider):
-        self.file = open('items.jl', 'w')
+        self.file = open(f'{spider.name}_items.jl', 'w')
+
 
     def close_spider(self, spider):
         self.file.close()
 
     def process_item(self, item, spider):
+
         line = json.dumps(ItemAdapter(item).asdict()) + "\n"
         self.file.write(line)
         return item

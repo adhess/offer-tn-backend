@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 class Vendor(models.Model):
     name = models.CharField(max_length=50)
     website = models.CharField(max_length=255)
-    logo_url = models.TextField()
+    logo_url = models.URLField()
 
 
 class Category(MPTTModel):
@@ -29,6 +29,12 @@ class Filter(models.Model):
     category = models.OneToOneField("Category", on_delete=models.CASCADE, related_name='filters')
 
 
+class ProductImage(models.Model):
+    src = models.URLField()
+    product_details = models.ForeignKey('ProductVendorDetails', null=True, blank=True, on_delete=models.CASCADE,
+                                        related_name='images')
+
+
 class ProductVendorDetails(models.Model):
     class InventoryState(models.TextChoices):
         IN_STOCK = 'IS', _('In stock')
@@ -49,14 +55,13 @@ class ProductVendorDetails(models.Model):
     )
 
 
-class ProductImage(models.Model):
-    src = models.URLField()
-    product_details = models.ForeignKey('ProductVendorDetails', null=True, blank=True, on_delete=models.CASCADE,
-                                        related_name='images')
-
-
 class StartUrl(models.Model):
     url = models.URLField()
     category = models.ForeignKey("Category", on_delete=models.CASCADE, related_name='start_urls')
-    product_type = models.ForeignKey("Category", on_delete=models.CASCADE)
+    item = models.ForeignKey("ScrapyItem", on_delete=models.CASCADE)
     vendor = models.ForeignKey("Vendor", on_delete=models.CASCADE, related_name='start_urls')
+
+
+class ScrapyItem(models.Model):
+    name = models.CharField(max_length=50)
+    age = models.URLField()
