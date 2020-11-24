@@ -1,4 +1,5 @@
 import random
+from datetime import datetime, timedelta
 
 from django.core.management.base import BaseCommand
 from app.models import *
@@ -29,12 +30,28 @@ def _populate(self):
         v.save()
     images = {
         'Clothing': [
+            'https://matalan-content.imgix.net/uploads/asset_file/asset_file/284191/1598949135.3114743-S2797036_C228_Alt1.jpg?ixlib=rails-2.1.4&auto=format%2Ccompress&cs=tinysrgb&w=446&s=e1d4ab69d70f25d2614001c28039fb45',
             'https://static.zara.net/photos///rw-center/2020/I/0/1/p/7969/227/800/8/w/1839/7969227800_2_1_1.jpg?ts=1605713894346',
             'https://static.zara.net/photos///2020/I/0/1/p/7969/224/800/2/w/913/7969224800_2_1_1.jpg?ts=1605705252652',
             'https://static.zara.net/photos///2020/I/0/1/p/7969/224/800/2/w/914/7969224800_1_1_1.jpg?ts=1605705244985',
             'https://static.zara.net/photos///2020/I/0/1/p/3666/184/800/3/w/913/3666184800_2_1_1.jpg?ts=1605705914635',
             'https://static.zara.net/photos///2020/I/0/1/p/0858/054/753/4/w/1841/0858054753_9_20_1.jpg?ts=1605800021018',
             'https://static.zara.net/photos///rw-center/2021/V/0/1/p/5320/712/806/3/w/1841/5320712806_1_1_1.jpg?ts=1605613271445',
+            'https://media.boohoo.com/i/boohoo/fzz02006_black_xl?$product_image_category_page_horizontal_filters_desktop$&fmt=webp',
+            'https://media.boohoo.com/i/boohoo/fzz51340_stone_xl?$product_image_category_page_horizontal_filters_desktop$&fmt=webp',
+            'https://media.boohoo.com/i/boohoo/pzz62023_grey_xl?$product_image_category_page_horizontal_filters_desktop$&fmt=webp',
+            'https://media.boohoo.com/i/boohoo/pzz58815_grey_xl?$product_image_category_page_horizontal_filters_desktop$&fmt=webp',
+            'https://cdn.clothingshoponline.com/Images/Style/403_fm.jpg',
+            'https://cdn.clothingshoponline.com/Images/Style/2769_fm.jpg',
+            'https://cdn.clothingshoponline.com/Images/Style/3644_fm.jpg',
+            'https://cdn.clothingshoponline.com/Images/Style/394_fm.jpg',
+            'https://www.clothingshoponline.com/p/boxercraft/t66_women%E2%80%99s-preppy-patch-slub-long-sleeve-t-shirt',
+            'https://matalan-content.imgix.net/uploads/asset_file/asset_file/288895/1600414320.9883795-S2790526_C323_Alt1.jpg?ixlib=rails-2.1.4&auto=format%2Ccompress&cs=tinysrgb&w=446&s=91192fd658d083c822115e1e168b5700',
+            'https://matalan-content.imgix.net/uploads/asset_file/asset_file/292086/1602227016.5904317-S2798784_C526_Alt1.jpg?ixlib=rails-2.1.4&auto=format%2Ccompress&cs=tinysrgb&w=446&s=7ef7ce6d82567b83973b2b0cb12092f8',
+            'https://matalan-content.imgix.net/uploads/asset_file/asset_file/288907/1603787515.3169305-S2798789_C47Q_Alt1.jpg?ixlib=rails-2.1.4&auto=format%2Ccompress&cs=tinysrgb&w=446&s=299f5e17694b0fbce29900605ed44710',
+            'https://matalan-content.imgix.net/uploads/asset_file/asset_file/288908/1604492533.2555664-S2798792_C333_Alt1.jpg?ixlib=rails-2.1.4&auto=format%2Ccompress&cs=tinysrgb&w=446&s=860e9bb3341086e822161fcbf3fcb5f3',
+            'https://matalan-content.imgix.net/uploads/asset_file/asset_file/288910/1601624721.2960753-S2798899_C101_Alt1.jpg?ixlib=rails-2.1.4&auto=format%2Ccompress&cs=tinysrgb&w=446&s=c9b6f5b435adf24cd1d945062ef03c56',
+            'https://matalan-content.imgix.net/uploads/asset_file/asset_file/292186/1603787515.7513235-S2798903_C333_Alt1.jpg?ixlib=rails-2.1.4&auto=format%2Ccompress&cs=tinysrgb&w=446&s=842b8f44b0f548c453c0050b62b51003',
         ],
         'Food': [
             'https://www.onamangepourvous.tn/wp-content/uploads/2017/12/90.jpg',
@@ -72,12 +89,27 @@ def _populate(self):
             'https://www.wiki.tn/55123-home_default_mobi/honor-8a-bleu-.jpg',
             'https://www.wiki.tn/55120-home_default_mobi/honor-8a-rouge.jpg',
             'https://www.wiki.tn/40680-home_default_mobi/samsung-galaxy-s10.jpg',
+            'https://images.ctfassets.net/wcfotm6rrl7u/2Obq6PBk4Itttstt47qoG4/0caca27b1e3ff118f9580420650a57b6/nokia_5_3-front_back-Cyan.png?w=230&h=230&fit=pad&bg=rgb:fff',
+            'https://images.ctfassets.net/wcfotm6rrl7u/21STLirH16JPA0KmAq2blL/c688e4d3f50e50c57ffd62e3ee214e32/nokia_6_2-front_back-ice.png?w=230&h=230&fit=pad&bg=rgb:fff',
+            'https://images.ctfassets.net/wcfotm6rrl7u/2dz1S5fKh1TJUYQF16XrZZ/66c1ada26a46bf3050cccbf4d549314e/nokia_4_2-front_back-Pink.png?w=230&h=230&fit=pad&bg=rgb:fff',
+            'https://images.ctfassets.net/wcfotm6rrl7u/2sO5H02uVGptb7Y68jrii7/ce5058dab120782b49f1801a9c9f6bd9/nokia_3_4-front_back-Fjord.png?w=230&h=230&fit=pad&bg=rgb:fff',
+            'https://images.ctfassets.net/wcfotm6rrl7u/6MHf3EPng9LoIMTIUlj8sk/12c24603b5fc273c573ba00426589a97/nokia_C3-front_back-Nordic_Blue.png?w=230&h=230&fit=pad&bg=rgb:fff',
+            'https://images.ctfassets.net/wcfotm6rrl7u/6960cFaQX8pOTsuT5DML7D/cafcf36fea35cda0a87e14a179d6028b/nokia_2_3-front_n_back-cyan_green.png?w=230&h=230&fit=pad&bg=rgb:fff',
         ],
         'Camera': [
             'https://www.wiki.tn/53210-home_default_mobi/appareil-photo-reflex-numerique-canon-eos-80d-wifi-obj-18-55-is-stm.jpg',
             'https://www.wiki.tn/30027-home_default_mobi/appareil-photo-nikon-d7200-objectif-18-140.jpg',
             'https://www.wiki.tn/53202-home_default_mobi/appareil-reflex-numerique-canon-eos-5d-mark-iv-body.jpg',
             'https://www.wiki.tn/53216-home_default_mobi/appareil-photo-reflex-numerique-canon-eos-80d-objectif-ef-s-18-135mm-s.jpg',
+            'https://www.e-infin.com/image/300/estorethumb/3999.jpg',
+            'https://www.e-infin.com/image/300/estorethumb/3556.jpg',
+            'https://www.e-infin.com/image/300/estorethumb/4072.jpg',
+            'https://www.e-infin.com/image/300/estorethumb/4165.jpg',
+            'https://www.e-infin.com/image/300/estorethumb/4178.jpg',
+            'https://www.e-infin.com/image/300/estorethumb/4179.jpg',
+            'https://www.e-infin.com/image/300/estorethumb/4177.jpg',
+            'https://www.e-infin.com/image/300/estorethumb/4176.jpg',
+            'https://www.e-infin.com/image/300/estorethumb/4175.jpg',
         ],
         'Beauty': [
             'https://beautystore.tn/4335-home_default/revolution-palette-fard-a-joues-ultra-blush-hot-spice.jpg',
@@ -114,11 +146,7 @@ def _populate(self):
         get_child_category(arr=arr, data=c, parent=None)
 
     for category in arr:
-        for k in range(30, 50):
-            min_registered_prices = []
-            for i in range(1, random.randint(2, 15)):
-                min_registered_prices.append(random.randint(1000, 7000))
-
+        for k in range(30, 100):
             product = Product(
                 category=category,
                 characteristics={
@@ -133,8 +161,7 @@ def _populate(self):
                     'OS': ['FreeDos', 'Ubuntu', 'Windows'][random.randint(0, 2)],
                     'color': ['black', 'red', 'blue', 'pink'][random.randint(0, 3)]
                 },
-                name='best computer ever xg78ti',
-                min_registered_prices={'data': min_registered_prices},
+                name='best computer ever ' + get_random_string(),
                 image_url=images[category.name][random.randint(0, len(images[category.name]) - 1)],
                 popularity=random.randint(15, 100),
                 ref=get_random_string()
@@ -148,6 +175,15 @@ def _populate(self):
                     ProductVendorDetails.InventoryState.ON_COMMAND,
                     ProductVendorDetails.InventoryState.OUT_OF_STOCK,
                 ]
+                min_registered_prices = []
+                date = datetime(2019, 3, 5)
+                for i in range(0, 15):
+                    length = len(min_registered_prices)
+                    price = 0 if length == 0 else min_registered_prices[length - 1]
+                    min_registered_prices.append(
+                            price if length > 0 and random.randint(0, 1) == 0 else random.randint(1000, 7000)
+                    )
+                    date += timedelta(7)
                 product_details = ProductVendorDetails(
                     discount_available=random.randint(0, 1) % 2 == 1,
                     inventory_state=stat[random.randint(0, 3)],
@@ -155,7 +191,8 @@ def _populate(self):
                     unit_price=min_registered_prices[len(min_registered_prices) - 1],
                     url='https://www.wiki.tn/pc-portables-gamer/pc-portable-gamer-asus-zenbook-pro-duo-i9-10e-gen-32go-1to-ssd-32231.html',
                     vendor=vendors[random.randint(0, 4)],
-                    warranty=['1 ans', '2 ans', '3 ans', '4 ans', '5 ans'][random.randint(0, 4)]
+                    warranty=['1 ans', '2 ans', '3 ans', '4 ans', '5 ans'][random.randint(0, 4)],
+                    min_registered_prices={'data': min_registered_prices},
                 )
                 product_details.save()
 

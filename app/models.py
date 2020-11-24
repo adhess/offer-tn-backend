@@ -23,7 +23,6 @@ class Product(models.Model):
     popularity = models.IntegerField(null=True)
     category = models.ForeignKey("Category", on_delete=models.CASCADE, related_name='products')
     image_url = models.TextField()
-    min_registered_prices = models.JSONField()
 
 
 class Filter(models.Model):
@@ -50,6 +49,7 @@ class ProductVendorDetails(models.Model):
         choices=InventoryState.choices,
         default=InventoryState.IN_STOCK,
     )
+    min_registered_prices = models.JSONField()
 
 
 class StartUrl(models.Model):
