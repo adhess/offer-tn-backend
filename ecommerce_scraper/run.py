@@ -11,16 +11,21 @@ with open('conf.json', 'r') as f:
     regexes = json.load(f)
 
 # TODO get these parameters from the database
-mytek_urls = ['https://www.mytek.tn/13-pc-portable#/gamer-oui',
-              'https://www.mytek.tn/13-pc-portable#/',
-              'https://www.mytek.tn/379-mac',
-              'https://www.mytek.tn/13-pc-portable#/type-ultrabook',
-              ]
-wiki_urls = ['https://www.wiki.tn/c/pc-portable-gamer-85.html',
-             'https://www.wiki.tn/c/pc-portable-120.html',
-             'https://www.wiki.tn/c/macbook-568.html',
+# TODO find solution to duplicate products from different links having the wrong category
+mytek_urls = [
+    'https://www.mytek.tn/13-pc-portable#/gamer-oui',
+    'https://www.mytek.tn/13-pc-portable',
+    'https://www.mytek.tn/379-mac',
+    'https://www.mytek.tn/13-pc-portable#/type-ultrabook',
+]
 
-             ]
+wiki_urls = [
+    'https://www.wiki.tn/c/pc-portable-120.html',
+    'https://www.wiki.tn/c/pc-portable-gamer-85.html',
+    'https://www.wiki.tn/c/macbook-568.html',
+    'https://www.wiki.tn/c/transformer-121.html',
+]
+
 
 # jumia_urls = ['https://jumia.com.tn/pc-gamer-2139/',
 #               'https://jumia.com.tn/pc-portables/',]
@@ -28,22 +33,25 @@ wiki_urls = ['https://www.wiki.tn/c/pc-portable-gamer-85.html',
 
 categories = ['Gamer', 'Regularlaptop', 'Mac', 'Ultrabook']
 
+
 items = ['Laptop'] * 4
 
-process.crawl(MytekSpider,
-              name='mytek',
-              urls=mytek_urls,
-              categories=categories,
-              items=items,
-              product_selector='#center_column .product-name',
-              pagination_selector='#pagination_next_bottom a',
-              specs_selector='#idTab2 td',
-              image_selector='#bigpic::attr(src)',
-              ref_selector='.editable::text',
-              name_selector='h1::text',
-              price_selector='#our_price_display::text',
-              product_re=regexes,
-              )
+
+# process.crawl(MytekSpider,
+#               name='mytek',
+#               urls=mytek_urls,
+#               categories=categories,
+#               priorities=priorities,
+#               items=items,
+#               product_selector='#center_column .product-name',
+#               pagination_selector='#pagination_next_bottom a',
+#               specs_selector='#idTab2 td',
+#               image_selector='#bigpic::attr(src)',
+#               ref_selector='.editable::text',
+#               name_selector='h1::text',
+#               price_selector='#our_price_display::text',
+#               product_re=regexes,
+#               )
 
 process.crawl(MytekSpider,
               name='wiki',

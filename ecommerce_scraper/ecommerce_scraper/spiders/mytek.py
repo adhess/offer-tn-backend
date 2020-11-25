@@ -17,7 +17,8 @@ class MytekSpider(scrapy.Spider):
             yield scrapy.Request(u, callback=self.parse,
                                  cb_kwargs=dict(category=cat, item=item),
                                  errback=self.errback_httpbin,
-                                 dont_filter=False)
+                                 dont_filter=False,
+                                 )
 
     def parse(self, response, category=None, item=None, **kwargs):
         product_links = response.css(self.product_selector)
@@ -71,14 +72,15 @@ class MytekSpider(scrapy.Spider):
                         break
         yield product
 
-    def rchop(self, s, *sub):
+    @staticmethod
+    def rchop(s, *sub):
         return s[:-len(sub)] if s.endswith(sub) else s
 
-    def get_field(self, response, selector=None):
+    @staticmethod
+    def get_field(response, selector=None):
         if selector is None:
             return
         return response.css(selector)
-
 
     def errback_httpbin(self, failure):
         # log all failures

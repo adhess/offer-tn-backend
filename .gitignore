@@ -16,4 +16,4 @@ build/
 
 Pipfile.lock
 
-items*.jl
+*.jl
