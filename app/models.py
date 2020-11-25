@@ -32,12 +32,6 @@ class Filter(models.Model):
     category = models.OneToOneField("Category", on_delete=models.CASCADE, related_name='filters')
 
 
-class ProductImage(models.Model):
-    src = models.URLField()
-    product_details = models.ForeignKey('ProductVendorDetails', null=True, blank=True, on_delete=models.CASCADE,
-                                        related_name='images')
-
-
 class ProductVendorDetails(models.Model):
     class InventoryState(models.TextChoices):
         IN_STOCK = 'IS', _('In stock')
