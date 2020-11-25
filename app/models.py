@@ -8,12 +8,22 @@ class Vendor(models.Model):
     website = models.CharField(max_length=255)
     logo_url = models.URLField()
 
+    def __repr__(self):
+        return f'{self.name}'
+
+    __str__ = __repr__
+
 
 class Category(MPTTModel):
     name = models.CharField(max_length=50)
-    icon = models.CharField(max_length=150)
+    icon = models.CharField(max_length=150, blank=True)
     active = models.BooleanField()
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
+
+    def __repr__(self):
+        return f'{self.name}'
+
+    __str__ = __repr__
 
 
 class Product(models.Model):
@@ -24,6 +34,11 @@ class Product(models.Model):
     category = models.ForeignKey("Category", on_delete=models.CASCADE, related_name='products')
     image_url = models.TextField()
     min_registered_prices = models.JSONField()
+
+    def __repr__(self):
+        return f'{self.name}'
+
+    __str__ = __repr__
 
 
 class Filter(models.Model):
@@ -51,6 +66,11 @@ class ProductVendorDetails(models.Model):
         default=InventoryState.IN_STOCK,
     )
 
+    def __repr__(self):
+        return f'{self.name} from {self.vendor}'
+
+    __str__ = __repr__
+
 
 class StartUrl(models.Model):
     url = models.URLField()
@@ -61,4 +81,9 @@ class StartUrl(models.Model):
 
 class ScrapyItem(models.Model):
     name = models.CharField(max_length=50)
-    age = models.URLField()
+
+    def __repr__(self):
+        return f'{self.name}Item'
+
+    __str__ = __repr__
+

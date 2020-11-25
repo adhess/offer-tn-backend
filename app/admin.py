@@ -4,10 +4,37 @@ from django.contrib import admin
 from app.models import *
 
 # Register your models here. admin.site.register(Flight)
-admin.site.register(Category)
-admin.site.register(Vendor)
-admin.site.register(StartUrl)
-admin.site.register(Product)
-admin.site.register(ProductVendorDetails)
-admin.site.register(ScrapyItem)
+
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'icon', 'active', 'parent')
+
+
+@admin.register(Vendor)
+class VendorAdmin(admin.ModelAdmin):
+    list_display = ('name', 'website')
+
+
+@admin.register(StartUrl)
+class StartUrlAdmin(admin.ModelAdmin):
+    list_display = ('url', 'category', 'item', 'vendor')
+
+
+@admin.register(ScrapyItem)
+class ScrapyItemAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+
+
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ('name', 'ref', 'category', 'characteristics', 'popularity')
+
+
+@admin.register(ProductVendorDetails)
+class ProductVendorDetailsAdmin(admin.ModelAdmin):
+    list_display = ('product', 'vendor', 'url', 'unit_price', 'discount_available', 'warranty', 'inventory_state')
+
+
+
 
