@@ -24,10 +24,10 @@ class MytekSpider(scrapy.Spider):
         yield from response.follow_all(product_links,
                                        callback=self.parse_product,
                                        cb_kwargs=dict(category=category, item=item))
-        # pagination_link = response.css(self.pagination_selector)
-        # yield from response.follow_all(pagination_link,
-        #                                callback=self.parse,
-        #                                cb_kwargs=dict(category=category, item=item))
+        pagination_link = response.css(self.pagination_selector)
+        yield from response.follow_all(pagination_link,
+                                       callback=self.parse,
+                                       cb_kwargs=dict(category=category, item=item))
 
     # def parse_laptop(self, response, category=None):
     #     laptop = items.LaptopItem()

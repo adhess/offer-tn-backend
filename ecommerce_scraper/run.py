@@ -19,7 +19,7 @@ mytek_urls = ['https://www.mytek.tn/13-pc-portable#/gamer-oui',
 wiki_urls = ['https://www.wiki.tn/c/pc-portable-gamer-85.html',
              'https://www.wiki.tn/c/pc-portable-120.html',
              'https://www.wiki.tn/c/macbook-568.html',
-             ''
+
              ]
 
 # jumia_urls = ['https://jumia.com.tn/pc-gamer-2139/',
@@ -30,36 +30,35 @@ categories = ['Gamer', 'Regularlaptop', 'Mac', 'Ultrabook']
 
 items = ['Laptop'] * 4
 
-# process.crawl(MytekSpider,
-#               name='mytek',
-#               urls=mytek_urls,
-#               categories=categories,
-#               items=items,
-#               product_selector='#center_column .product-name',
-#               pagination_selector='#pagination_next_bottom a',
-#               specs_selector='#idTab2 td',
-#               image_selector='#bigpic::attr(src)',
-#               ref_selector='.editable::text',
-#               name_selector='h1::text',
-#               price_selector='#our_price_display::text',
-#               product_re=regexes,
-#               )
-#
-# process.crawl(MytekSpider,
-#               name='wiki',
-#               urls=wiki_urls,
-#               categories=categories,
-#               items=items,
-#               product_selector='#product_list .product-name',
-#               pagination_selector='#pagination_next_bottom a',
-#               specs_selector='td',
-#               image_selector='#bigpic::attr(src)',
-#               ref_selector='.editable::text',
-#               name_selector='h1::text',
-#               price_selector='#our_price_display::text',
-#               product_re=regexes,
-#               )
+process.crawl(MytekSpider,
+              name='mytek',
+              urls=mytek_urls,
+              categories=categories,
+              items=items,
+              product_selector='#center_column .product-name',
+              pagination_selector='#pagination_next_bottom a',
+              specs_selector='#idTab2 td',
+              image_selector='#bigpic::attr(src)',
+              ref_selector='.editable::text',
+              name_selector='h1::text',
+              price_selector='#our_price_display::text',
+              product_re=regexes,
+              )
 
+process.crawl(MytekSpider,
+              name='wiki',
+              urls=wiki_urls,
+              categories=categories,
+              items=items,
+              product_selector='#product_list .product-name',
+              pagination_selector='#pagination_next_bottom a',
+              specs_selector='td',
+              image_selector='#bigpic::attr(src)',
+              ref_selector='.editable::text',
+              name_selector='h1::text',
+              price_selector='#our_price_display::text',
+              product_re=regexes,
+              )
 
 
 # TODO make the scraper work with Jumia
