@@ -33,6 +33,7 @@ class LaptopItem(GeneralItem):
     screen_frequency = scrapy.Field()
     # touch_screen = scrapy.Field()
     hard_disk = scrapy.Field()
+    ssd = scrapy.Field()
     gpu = scrapy.Field()
     # connections = scrapy.Field()
     # bluetooth = scrapy.Field()

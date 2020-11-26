@@ -7,11 +7,12 @@ class Vendor(models.Model):
     name = models.CharField(max_length=50)
     website = models.CharField(max_length=255)
     logo_url = models.URLField()
+    css_selectors = models.JSONField(default=dict)
 
-    def __repr__(self):
+    def __str__(self):
         return f'{self.name}'
 
-    __str__ = __repr__
+    __repr__ = __str__
 
 
 class Category(MPTTModel):
@@ -20,29 +21,29 @@ class Category(MPTTModel):
     active = models.BooleanField()
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
 
-    def __repr__(self):
+    def __str__(self):
         return f'{self.name}'
 
-    __str__ = __repr__
+    __repr__ = __str__
 
 
 class Product(models.Model):
     name = models.CharField(max_length=255)
     ref = models.CharField(max_length=255)
-    characteristics = models.JSONField()
+    characteristics = models.JSONField(default=dict)
     popularity = models.IntegerField(null=True)
     category = models.ForeignKey("Category", on_delete=models.CASCADE, related_name='products')
     image_url = models.TextField()
     min_registered_prices = models.JSONField()
 
-    def __repr__(self):
+    def __str__(self):
         return f'{self.name}'
 
-    __str__ = __repr__
+    __repr__ = __str__
 
 
 class Filter(models.Model):
-    characteristics = models.JSONField()
+    characteristics = models.JSONField(default=dict)
     # characteristics = {cpu: "checkbox"}
     category = models.OneToOneField("Category", on_delete=models.CASCADE, related_name='filters')
 
@@ -66,10 +67,10 @@ class ProductVendorDetails(models.Model):
         default=InventoryState.IN_STOCK,
     )
 
-    def __repr__(self):
+    def __str__(self):
         return f'{self.name} from {self.vendor}'
 
-    __str__ = __repr__
+    __repr__ = __str__
 
 
 class StartUrl(models.Model):
@@ -82,8 +83,8 @@ class StartUrl(models.Model):
 class ScrapyItem(models.Model):
     name = models.CharField(max_length=50)
 
-    def __repr__(self):
+    def __str__(self):
         return f'{self.name}Item'
 
-    __str__ = __repr__
+    __repr__ = __str__
 
