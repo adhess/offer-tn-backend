@@ -175,12 +175,12 @@ def _populate(self):
                     ProductVendorDetails.InventoryState.ON_COMMAND,
                     ProductVendorDetails.InventoryState.OUT_OF_STOCK,
                 ]
-                min_registered_prices = []
+                registered_prices = []
                 date = datetime(2019, 3, 5)
                 for i in range(0, 15):
-                    length = len(min_registered_prices)
-                    price = 0 if length == 0 else min_registered_prices[length - 1]
-                    min_registered_prices.append(
+                    length = len(registered_prices)
+                    price = 0 if length == 0 else registered_prices[length - 1]
+                    registered_prices.append(
                             price if length > 0 and random.randint(0, 1) == 0 else random.randint(1000, 7000)
                     )
                     date += timedelta(7)
@@ -188,11 +188,11 @@ def _populate(self):
                     discount_available=random.randint(0, 1) % 2 == 1,
                     inventory_state=stat[random.randint(0, 3)],
                     product=product,
-                    unit_price=min_registered_prices[len(min_registered_prices) - 1],
+                    unit_price=registered_prices[len(registered_prices) - 1],
                     url='https://www.wiki.tn/pc-portables-gamer/pc-portable-gamer-asus-zenbook-pro-duo-i9-10e-gen-32go-1to-ssd-32231.html',
                     vendor=vendors[random.randint(0, 4)],
                     warranty=['1 ans', '2 ans', '3 ans', '4 ans', '5 ans'][random.randint(0, 4)],
-                    min_registered_prices={'data': min_registered_prices},
+                    registered_prices={'data': registered_prices},
                 )
                 product_details.save()
 

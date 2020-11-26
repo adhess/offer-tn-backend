@@ -49,7 +49,7 @@ class ProductVendorDetails(models.Model):
         choices=InventoryState.choices,
         default=InventoryState.IN_STOCK,
     )
-    min_registered_prices = models.JSONField()
+    registered_prices = models.JSONField()
 
 
 class StartUrl(models.Model):
