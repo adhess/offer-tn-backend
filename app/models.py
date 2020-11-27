@@ -18,7 +18,7 @@ class Vendor(models.Model):
 class Category(MPTTModel):
     name = models.CharField(max_length=50)
     icon = models.CharField(max_length=150, blank=True)
-    active = models.BooleanField()
+    active = models.BooleanField(default=False)
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
 
     def __str__(self):
@@ -65,7 +65,7 @@ class ProductVendorDetails(models.Model):
         choices=InventoryState.choices,
         default=InventoryState.IN_STOCK,
     )
-    registered_prices = models.JSONField()
+    registered_prices = models.JSONField(default=dict)
 
     def __str__(self):
         return f'{self.name} from {self.vendor}'
