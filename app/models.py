@@ -1,5 +1,6 @@
 from django.db import models
 from mptt.models import MPTTModel, TreeForeignKey
+from django.contrib.postgres.fields import ArrayField
 from django.utils.translation import gettext_lazy as _
 
 
@@ -57,7 +58,6 @@ class ProductVendorDetails(models.Model):
     product = models.ForeignKey("Product", on_delete=models.CASCADE, related_name='details')
     vendor = models.ForeignKey("Vendor", on_delete=models.CASCADE)
     url = models.URLField()
-    unit_price = models.FloatField()
     discount_available = models.BooleanField(default=False)
     warranty = models.CharField(max_length=50)
     inventory_state = models.CharField(
@@ -65,10 +65,10 @@ class ProductVendorDetails(models.Model):
         choices=InventoryState.choices,
         default=InventoryState.IN_STOCK,
     )
-    registered_prices = models.JSONField(default=dict)
+    registered_prices = ArrayField(models.DecimalField(max_digits=12, decimal_places=3))
 
     def __str__(self):
-        return f'{self.name} from {self.vendor}'
+        return f'{self.product} from {self.vendor}'
 
     __repr__ = __str__
 
@@ -79,6 +79,11 @@ class StartUrl(models.Model):
     item = models.ForeignKey("ScrapyItem", on_delete=models.CASCADE)
     vendor = models.ForeignKey("Vendor", on_delete=models.CASCADE, related_name='start_urls')
 
+    def __str__(self):
+        return f'{self.url}'
+
+    __repr__ = __str__
+
 
 class ScrapyItem(models.Model):
     name = models.CharField(max_length=50)
@@ -87,4 +92,5 @@ class ScrapyItem(models.Model):
         return f'{self.name}Item'
 
     __repr__ = __str__
+
 

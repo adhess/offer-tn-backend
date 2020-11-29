@@ -33,7 +33,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(ProductVendorDetails)
 class ProductVendorDetailsAdmin(admin.ModelAdmin):
-    list_display = ('product', 'vendor', 'url', 'unit_price', 'discount_available', 'warranty', 'inventory_state')
+    list_display = ('product', 'vendor', 'url', 'discount_available', 'warranty', 'inventory_state', 'registered_prices')
 
 
 

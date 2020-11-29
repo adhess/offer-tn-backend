@@ -1,5 +1,5 @@
 {
-  "laptop" : {
+  "LaptopItem" : {
     "screen_size" : {"patterns" : ["(1[23456789]\\.[1-9](\"|″) ?((HD)|(FHD)|(Full HD)|(FULL HD)))"], "formats" : ["{0}"]},
 
     "ssd" : {"patterns": ["([1-9]\\d\\d) [Gg][oObB] [Ss][Ss][dD]"], "formats":["{0} GB"]},

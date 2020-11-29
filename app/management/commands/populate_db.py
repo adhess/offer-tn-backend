@@ -1,14 +1,16 @@
 import random
-from datetime import datetime, timedelta
 
-from django.core.management import call_command
 from django.core.management.base import BaseCommand
 from django.db import transaction
 from app.models import *
-
-
-from .mock_data import categories, images
+from .mock_data import categories, images, start_urls
 import string
+import pyclbr
+import sys
+from pathlib import Path
+
+
+sys.path.append(str(Path('app').resolve().parent.joinpath('ecommerce_scraper', 'ecommerce_scraper')))
 
 
 class Command(BaseCommand):
@@ -35,11 +37,30 @@ class Command(BaseCommand):
     @staticmethod
     def _populate_vendors():
         vendors = [
-            Vendor(name='mytek', website='https://mytek.tn/',
-                   logo_url='https://web-assets-mk.s3.amazonaws.com/img/mytek-informatique-logo-1482243620.jpg'),
+            Vendor(name='mytek',
+                   website='https://mytek.tn/',
+                   logo_url='https://web-assets-mk.s3.amazonaws.com/img/mytek-informatique-logo-1482243620.jpg',
+                   css_selectors=dict(product_selector='#center_column .product-name',
+                                      pagination_selector='#pagination_next_bottom a',
+                                      specs_selector='#idTab2 td',
+                                      image_selector='#bigpic::attr(src)',
+                                      ref_selector='.editable::text',
+                                      name_selector='h1::text',
+                                      price_selector='#our_price_display::text',
+                                      )),
             Vendor(name='tunisianet', website='https://www.tunisianet.com.tn/',
                    logo_url='https://www.tunisianet.com.tn/img/tunisianet-logo-1573421421.jpg'),
-            Vendor(name='wiki', website='https://www.wiki.tn/', logo_url='https://www.wiki.tn/img/logo.jpg'),
+            Vendor(name='wiki',
+                   website='https://www.wiki.tn/',
+                   logo_url='https://www.wiki.tn/img/logo.jpg',
+                   css_selectors=dict(product_selector='#product_list .product-name',
+                                      pagination_selector='#pagination_next_bottom a',
+                                      specs_selector='td',
+                                      image_selector='#bigpic::attr(src)',
+                                      ref_selector='.editable::text',
+                                      name_selector='h1::text',
+                                      price_selector='#our_price_display::text',
+                                      )),
             Vendor(name='scoop', website='https://www.scoop.com.tn/',
                    logo_url='https://www.scoop.com.tn/img/sp-g3shop-logo-1591977520.jpg'),
             Vendor(name='sbsinformatique', website='https://www.sbsinformatique.com/',
@@ -54,6 +75,27 @@ class Command(BaseCommand):
         for c in categories:
             self.get_leaf_categories(arr=leaf_categories, data=c, parent=None)
         return leaf_categories
+
+    @staticmethod
+    def _populate_scrapy_items():
+        module_name = 'items'
+        module_info = pyclbr.readmodule(module_name)
+        return [ScrapyItem.objects.create(name=item.name) for item in module_info.values()]
+
+    @staticmethod
+    def _populate_start_urls(leaf_categories, vendors, scrapy_items):
+        for vendor in vendors:
+            for item in scrapy_items:
+                for category in leaf_categories:
+                    if vendor.name in start_urls:
+                        if item.name in start_urls[vendor.name]:
+                            if category.name in start_urls[vendor.name][item.name]:
+                                StartUrl.objects.create(
+                                    url=start_urls[vendor.name][item.name][category.name],
+                                    category=category,
+                                    vendor=vendor,
+                                    item=ScrapyItem.objects.get(name='LaptopItem')
+                                )
 
     def _populate_product(self, leaf_categories=None, vendors=None):
         for category in leaf_categories:
@@ -82,36 +124,35 @@ class Command(BaseCommand):
                 for j in range(random.randint(1, 3)):
                     stat = ["IS", "OOS", "IT", "OC"]
                     registered_prices = []
-                    date = datetime(2019, 3, 5)
                     for i in range(0, 15):
                         length = len(registered_prices)
                         price = 0 if length == 0 else registered_prices[length - 1]
                         registered_prices.append(
                             price if length > 0 and random.randint(0, 1) == 0 else random.randint(1000, 7000)
                         )
-                        date += timedelta(7)
                     product_details = ProductVendorDetails(
                         discount_available=random.randint(0, 1) % 2 == 1,
                         inventory_state=stat[random.randint(0, 3)],
                         product=product,
-                        unit_price=registered_prices[len(registered_prices) - 1],
                         url='https://www.wiki.tn/pc-portables-gamer/pc-portable-gamer-asus-zenbook-pro-duo-i9-10e-gen-32go-1to-ssd-32231.html',
                         vendor=vendors[random.randint(0, 4)],
                         warranty=['1 ans', '2 ans', '3 ans', '4 ans', '5 ans'][random.randint(0, 4)],
-                        registered_prices={'data': registered_prices},
+                        registered_prices=registered_prices,
                     )
                     product_details.save()
 
     @transaction.atomic()
     def handle(self, *args, **options):
         self.stdout.write("Deleting old data...")
-        call_command('flush')
+        for model in [ProductVendorDetails, Product, StartUrl, ScrapyItem, Vendor, Category]:
+            model.objects.all().delete()
 
         self.stdout.write("Creating new data...")
 
         leaf_categories = self._populate_categories()
         vendors = self._populate_vendors()
-
+        scrapy_items = self._populate_scrapy_items()
+        self._populate_start_urls(leaf_categories, vendors, scrapy_items)
         if options["all"]:
             self._populate_product(leaf_categories, vendors)
 

@@ -31,7 +31,7 @@ class MytekSpider(scrapy.Spider):
                                        cb_kwargs=dict(category=category, item=item))
 
     # def parse_laptop(self, response, category=None):
-    #     laptop = items.LaptopItem()
+    #     laptop = scrapy_items.LaptopItem()
     #     laptop['name'] = response.css(self.name_selector).get()
     #     laptop['reference'] = response.css(self.ref_selector).get()
     #     laptop["category"] = category
@@ -52,15 +52,15 @@ class MytekSpider(scrapy.Spider):
     #     yield laptop
 
     def parse_product(self, response, category: str, item: str):
-        product = getattr(items, f'{item.capitalize()}Item')()
+        product = getattr(items, f'{item}')()
         product['name'] = self.get_field(response, self.name_selector).get()
         product['reference'] = self.get_field(response, self.ref_selector).get()
         product["category"] = category
         product["url"] = response.url
         product["image"] = self.get_field(response, self.image_selector).get() # TODO scrape all product images, not just one
-        product["price"] = self.rchop(self.get_field(response, self.price_selector).get(), 'TND')
+        product["price"] = self.format_price(self.get_field(response, self.price_selector).get(), 'TND')
         specs = ', '.join(self.get_field(response, self.specs_selector).re('<[^>]*>([^<]*)<'))
-        field_re = self.product_re[item.lower()]
+        field_re = self.product_re[item]
         for field in product.fields:
             if not product.get(field):
                 patterns, formats = field_re[field].values()
@@ -73,8 +73,9 @@ class MytekSpider(scrapy.Spider):
         yield product
 
     @staticmethod
-    def rchop(s, *sub):
-        return s[:-len(sub)] if s.endswith(sub) else s
+    def format_price(s, sub):
+        s = s[:-len(sub)] if s.endswith(sub) else s
+        return float(s.strip(' ').replace(',', '.'))
 
     @staticmethod
     def get_field(response, selector=None):

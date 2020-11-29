@@ -1,4 +1,4 @@
-# Define here the models for your scraped items
+# Define here the models for your scraped scrapy_items
 #
 # See documentation in:
 # https://docs.scrapy.org/en/latest/topics/items.html
