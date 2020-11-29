@@ -32,7 +32,7 @@
     
     "RAM Type" : {"patterns": [" DDR ?([3456])"], "formats": ["DDR{0}"]},
 
-    "CPU Freqency" : {"patterns": ["([1-6]((\\.)|,)\\d\\d?) ?GH(Z|z).*?([1-6]((\\.)|,)\\d\\d?) ?GH(Z|z)", "([1-6]((\\.)|,)\\d\\d?) ?GH(Z|z)"], "formats" : ["{0} GHz Up to {4} GHz", "{0} GHz"]},
+    "CPU Freqency" : {"patterns": ["([1-6]((\\.)|,)\\d\\d?) ?GH(Z|z).*?([1-6]((\\.)|,)\\d\\d?) ?GH(Z|z)", "([1-6]((\\.)|,)\\d\\d?) ?GH(Z|z)"], 					"formats" : ["{0} GHz Up to {4} GHz", "{0} GHz"]},
     "SKU" : {"patterns": ["([A-Z0-9]{16,})"], "formats": ["{0}"]},
 
     "OS" : {"patterns": ["((FreeDOS)|(FreeDos)|(FREEDOS)|(freedos))",
@@ -58,7 +58,35 @@
                             "([Rr][eE][dD])|([Rr][oO][uU][gG][eE])"
                             ], "formats": ["Silver", "Black", "Grey", "Brown", "Blue", "Gold", "Red"]},
 
-    "Graphics Card" : {"patterns": ["Intel®? HD Graphics", "NVIDIA QUADRO P3000"], "formats" : []},
-    "Screen Freqency" : {"patterns": ["([1-9]\\d\\d?)Hz"], "formats":["{0}Hz"]},
-    "CPU cache" : {"patterns": ["([12]?\\d(\\.\\d\\d?)?) ?[Mm][oObB]?"], "formats":["{0} MB"]}
+  "gpu" : {"patterns": [
+      "[Nn][Vv][iI][dD][iI][aA].[Gg][Ee][fF][Oo][Rr][Cc][Ee].([A-Z]{3}).?(\\d{3,4})[^A-Za-z]?([A-Za-z]{0,2})( |$)",
+      "[Nn][Vv][iI][dD][iI][aA].[Gg][Ee][fF][Oo][Rr][Cc][Ee]",
+      "[Nn][Vv][iI][dD][iI][aA].([A-Z]{2,3})( |$)",
+      "[Nn][Vv][iI][dD][iI][aA]",
+      "AMD [Rr][Aa][Dd][Ee][Oo][Nn] ([A-Z]{2,3}) [vV][Ee][Gg][Aa] (\\d{2,3})( |$)",
+      "AMD [Rr][Aa][Dd][Ee][Oo][Nn] ([A-Z]{2,3}) ?(\\d{3,4} [A-Za-z]{0,2})( |$)",
+      "AMD [Rr][Aa][Dd][Ee][Oo][Nn] ([A-Z]{2,3}) (\\d{3,4})( |$)",
+      "AMD [Rr][Aa][Dd][Ee][Oo][Nn] ([A-Z]{2,3})( |$)",
+      "AMD [Rr][Aa][Dd][Ee][Oo][Nn]",
+
+      "Intel®? HD Graphics", "NVIDIA QUADRO P3000"
+      ],
+      "formats" : [
+        "Nvidia GeForce {0} {1}{2}",
+        "Nvidia GeForce",
+        "Nvidia {0}",
+        "Nvidia",
+        "AMD Radeon {0} Vega {1}",
+        "AMD Radeon {0} {1}",
+        "AMD Radeon {0} {1}",
+        "AMD Radeon {0}",
+        "AMD Radeon",
+        "-------",
+        "-------"
+      ]},
+
+	"Screen Freqency" : {"patterns": ["([1-9]\\d\\d?)Hz"], "formats":["{0}Hz"]},
+    "CPU cache" : {"patterns": ["([12]?\\d(\\.\\d\\d?)?) ?[Mm][oObB]?"], "formats":["{0} MB"]},
+	"reference" : {"patterns": ["([A-Z0-9]{16,})"], "formats": ["{0}"]}
+
 }
