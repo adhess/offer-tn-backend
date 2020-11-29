@@ -1,17 +1,17 @@
 {
   "laptop" : {
-    "screen_size" : {"patterns" : ["(1[2-9]\\.[1-9](\"|″) ?((HD)|(FHD)|(Full HD)|(FULL HD)))"], "formats" : ["{0}"]},
+    "Screen" : {"patterns" : ["(1[2-9]\\.[1-9](\"|″) ?((HD)|(FHD)|(Full HD)|(FULL HD)))"], "formats" : ["{0}"]},
 
-    "ssd" : {"patterns": ["([1-9]\\d\\d) [Gg][oObB] [Ss][Ss][dD]"], "formats":["{0} GB"]},
+    "SSD" : {"patterns": ["([1-9]\\d\\d) [Gg][oObB] [Ss][Ss][dD]"], "formats":["{0} GB"]},
 
     "hard_disk" : {"patterns" : [" ([1-9]) ?(T(O|o|b|B)) ",
       "([1-9][0-9]+) ?(T(O|o|b|B))",
       "([0-9]+)(\\.|,)([0-9]) ?(T(O|o|b|B))"],
       "formats" : ["{0} TB","{0} TB", "{0}.{2} TB"] },
 
-    "cpu_gen" : {"patterns" : ["((I|i)[3579] ?- ?([1-9]\\d?)\\d\\d\\d[A-Z]{0,2})"], "formats" : ["{2}th Gen"]},
+    "Generation" : {"patterns" : ["((I|i)[3579] ?- ?([1-9]\\d?)\\d\\d\\d[A-Z]{0,2})"], "formats" : ["{2}th Gen"]},
 
-    "cpu" : {"patterns" : ["(AMD.*?[XA]([1-9]|(10))(-|\\s)[0-9]{4}(e\/b)?)",
+    "Processor" : {"patterns" : ["(AMD.*?[XA]([1-9]|(10))(-|\\s)[0-9]{4}(e\/b)?)",
       "(AMD[A-Za-z™]*?[0-9][GXgx])",
       "(AMD.*?[0-9]{4}[GXKWgxkw][XTxt*]?(.*?(\\(GM\\)))?)",
       "((AMD)?.*?((Ryzen)|(RYZEN)|(Phenom)|(PHENOM)|(Athlon)|(ATHLON)|(Threadripper)|(THREADRIPPER)).*?[753].*?[0-9]{4}([GXgx]?[*Tt])?)",
@@ -29,16 +29,16 @@
       "Intel® Celeron® {5}", "Intel® Pentium® {5}",  "Intel® Atom® {4}", "Intel® Core™ i{0}",
       "Apple M{0}"]},
 
-    "screen_resolution" : {"patterns": ["([1-9]\\d{3})( ?x|X ?)([1-9]\\d{2,3})"], "formats": ["{0} x {2}"]},
+    "Pixels" : {"patterns": ["([1-9]\\d{3})( ?x|X ?)([1-9]\\d{2,3})"], "formats": ["{0} x {2}"]},
 
-    "ram" : {"patterns" : ["RAM.{0,2}?(([0-9]|(12)|(10)|(16)|(20)|(24)|(32)|(64)|(128))).{0,2}((GO|o)|(go))",
+    "RAM" : {"patterns" : ["RAM.{0,2}?(([0-9]|(12)|(10)|(16)|(20)|(24)|(32)|(64)|(128))).{0,2}((GO|o)|(go))",
       "((M.MOIRE)|(M.moire)|(m.moire)|(memory))(.{0,2}?)([1-9]\\d?)((G|g)((B|b)|(o|O)))"], "formats" : ["{0} GB", "{6} GB"]},
 
-    "ram_type" : {"patterns": [" DDR ?([3456])"], "formats": ["DDR{0}"]},
+    "RAM Type" : {"patterns": [" DDR ?([3456])"], "formats": ["DDR{0}"]},
 
-    "cpu_frequency" : {"patterns": ["([1-6]((\\.)|,)\\d\\d?) ?GH(Z|z).*?([1-6]((\\.)|,)\\d\\d?) ?GH(Z|z)", "([1-6]((\\.)|,)\\d\\d?) ?GH(Z|z)"], "formats" : ["{0} GHz Up to {4} GHz", "{0} GHz"]},
+    "CPU Freqency" : {"patterns": ["([1-6]((\\.)|,)\\d\\d?) ?GH(Z|z).*?([1-6]((\\.)|,)\\d\\d?) ?GH(Z|z)", "([1-6]((\\.)|,)\\d\\d?) ?GH(Z|z)"], "formats" : ["{0} GHz Up to {4} GHz", "{0} GHz"]},
 
-    "os" : {"patterns": ["((FreeDOS)|(FreeDos)|(FREEDOS)|(freedos))",
+    "OS" : {"patterns": ["((FreeDOS)|(FreeDos)|(FREEDOS)|(freedos))",
       "((w|Windows)|(WINDOWS)) ?(\\d\\d) ?([pP][rR][oO])",
       "((w|Windows)|(WINDOWS)) ?(\\d\\d) ?([hH][oO][mM][eE])",
       "((w|Windows)|(WINDOWS)) ?(\\d\\d)",
@@ -49,9 +49,9 @@
         "Windows {3} Pro", "Windows {3} Home","Windows {3}", "Windows",
         "Linux", "MacOS X"]},
 
-    "warranty" : {"patterns": ["([1-9]) ?([Aa][Nn]([Ss]?))|([Yy][eE][Aa][rR]([Ss]?))"], "formats": ["{0} Year(s)"]},
+    "Warranty"  : {"patterns": ["([1-9]) ?([Aa][Nn]([Ss]?))|([Yy][eE][Aa][rR]([Ss]?))"], "formats": ["{0} Year(s)"]},
 
-    "color" : {"patterns": [
+    "Color" : {"patterns": [
       "([Ss][iI][lL][Vv][Ee][Rr])|([Aa][rR][gG][eE][nN][Tt])",
       "([Nn][oO][iI][rR])|([bB][lL][aA][cK])",
       "[Gg][rR](([eE][yY])|([iI][Ss]))",
@@ -88,8 +88,8 @@
         "-------"
       ]},
 
-    "screen_frequency" : {"patterns": ["([1-9]\\d\\d?)Hz"], "formats":["{0}Hz"]},
-    "cpu_cache" : {"patterns": ["([12]?\\d(\\.\\d\\d?)?) ?[Mm][oObB]?"], "formats":["{0} MB"]},
+    "Screen Freqency" : {"patterns": ["([1-9]\\d\\d?)Hz"], "formats":["{0}Hz"]},
+    "CPU cache" : {"patterns": ["([12]?\\d(\\.\\d\\d?)?) ?[Mm][oObB]?"], "formats":["{0} MB"]},
     "reference" : {"patterns": ["([A-Z0-9]{16,})"], "formats": ["{0}"]}
   }
 }
