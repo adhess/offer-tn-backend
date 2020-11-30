@@ -9,16 +9,26 @@ class ProductsViewSet(viewsets.ModelViewSet):
     permission_classes = [
         permissions.AllowAny
     ]
+    ordering_fields = ['popularity']
 
     def get_queryset(self):
-        category_name = self.request.query_params.get('category_name')
+        category_id = self.request.query_params.get('category_id')
+        print(category_id)
+        order = self.request.query_params.get('ordering')
+        if category_id is None:
+            return Product.objects.all().order_by('-popularity')
+
         category_involved = [p.id for p in list(
             Category.objects.filter(
                 Q(children__isnull=True),
-                Q(parent__parent__name=category_name) | Q(parent__name=category_name) | Q(name=category_name)
+                Q(parent__parent_id=category_id) | Q(parent_id=category_id) | Q(id=category_id)
             )
         )]
-        return Product.objects.filter(category__in=category_involved)
+
+        if order is None:
+            return Product.objects.filter(category__in=category_involved)
+
+        return Product.objects.filter(category__in=category_involved).order_by(order)
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
