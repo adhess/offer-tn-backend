@@ -7,7 +7,6 @@
 import json
 from app.models import ProductVendorDetails, Product, Vendor
 from django.db import transaction
-from datetime import datetime
 
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
@@ -23,7 +22,7 @@ class EcommerceScraperPipeline:
         specs = product.characteristics
         for field in specs:
             if not specs[field]:
-                specs[field] = item[field]
+                specs[field] = item.get(field)
 
     @staticmethod
     def update_product_vendor_details(product_vendor_details, item):
@@ -38,53 +37,55 @@ class EcommerceScraperPipeline:
         adapter = ItemAdapter(item)
 
         with transaction.atomic():
-            existing_product = Product.objects.get(
+            product = Product.objects.filter(
                 ref=adapter['reference'],
-                characteristics={'ram': adapter['ram'], 'ssd': adapter['ssd'], 'hard_disk': adapter['hard_disk']}
+                # characteristics={'ram': adapter['ram'], 'ssd': adapter['ssd'], 'hard_disk': adapter['hard_disk']}
             )
 
-            if existing_product:
-                self.update_product(existing_product, adapter)
+            if product:
+                product = product[0]
+                self.update_product(product, adapter)
             else:
                 product = Product(
                     name=adapter['name'],
-                    ref=adapter['ref'],
+                    ref=adapter['reference'],
                     category=adapter['category'],
                     image_url=adapter['image'],
                     characteristics={
-                        'os': adapter['os'],
-                        'reference': adapter['reference'],
-                        'cpu': adapter['cpu'],
-                        'cpu_frequency': adapter['cpu_frequency'],
-                        'cpu_gen': adapter['cpu_gen'],
-                        'cpu_cache': adapter['cpu_cache'],
-                        'ram': adapter['ram'],
-                        'ram_type': adapter['ram_type'],
-                        'screen_size': adapter['screen_size'],
-                        'screen_resolution': adapter['screen_resolution'],
-                        'screen_frequency': adapter['screen_frequency'],
-                        'hard_disk': adapter['hard_disk'],
-                        'ssd': adapter['ssd'],
-                        'gpu': adapter['gpu'],
-                        'color': adapter['color'],
+                        'os': adapter.get('os'),
+                        'cpu': adapter.get('cpu'),
+                        'cpu_frequency': adapter.get('cpu_frequency'),
+                        'cpu_gen': adapter.get('cpu_gen'),
+                        'cpu_cache': adapter.get('cpu_cache'),
+                        'ram': adapter.get('ram'),
+                        'ram_type': adapter.get('ram_type'),
+                        'screen_size': adapter.get('screen_size'),
+                        'screen_resolution': adapter.get('screen_resolution'),
+                        'screen_frequency': adapter.get('screen_frequency'),
+                        'hard_disk': adapter.get('hard_disk'),
+                        'ssd': adapter.get('ssd'),
+                        'gpu': adapter.get('gpu'),
+                        'color': adapter.get('color'),
                     }
                 )
                 product.save()
 
-            vendor = Vendor.objects.get(name=spider.name.capitalize())
-            existing_details = product.details.filter(vendor=vendor)  #Todo find out if this is optimal or not
-            if existing_details:
-                self.update_product_vendor_details(existing_details, adapter)
+            vendor = Vendor.objects.get(name=spider.name)
+            product_vendor_details = product.details.filter(vendor=vendor)  #Todo find out if this is optimal or not
+            if product_vendor_details:
+                product_vendor_details = product_vendor_details[0]
+                self.update_product_vendor_details(product_vendor_details, adapter)
 
             else:
                 product_vendor_details = ProductVendorDetails(
                     product=product,
                     vendor=vendor,
                     url=adapter['url'],
-                    warranty=adapter['warranty'],
+                    warranty=adapter.get('warranty'),
                     registered_prices=[adapter['price']],
                 )
                 product_vendor_details.save()
+        return item
 
 
 class JsonWriterPipeline:

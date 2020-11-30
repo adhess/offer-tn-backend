@@ -7,16 +7,6 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-import os
-import sys
-
-
-sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), os.path.pardir))
-os.environ['DJANGO_SETTINGS_MODULE'] = 'backend.settings'
-
-import django
-django.setup()
-
 
 BOT_NAME = 'ecommerce_scraper'
 
@@ -84,7 +74,7 @@ DOWNLOADER_MIDDLEWARES = {
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
     'ecommerce_scraper.pipelines.EcommerceScraperPipeline': 300,
-    'ecommerce_scraper.pipelines.JsonWriterPipeline': 300,
+    # 'ecommerce_scraper.pipelines.JsonWriterPipeline': 300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
