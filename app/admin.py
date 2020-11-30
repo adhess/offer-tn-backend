@@ -1,7 +1,9 @@
 from django.contrib import admin
 
 # Register your models here.
-from app.models import *
+from app.models import (
+    Category, Vendor, StartUrl, ScrapyItem, Product, ProductVendorDetails
+)
 
 # Register your models here. admin.site.register(Flight)
 

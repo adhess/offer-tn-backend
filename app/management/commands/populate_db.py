@@ -2,7 +2,9 @@ import random
 
 from django.core.management.base import BaseCommand
 from django.db import transaction
-from app.models import *
+from app.models import (
+    Category, Vendor, StartUrl, ScrapyItem, Product, ProductVendorDetails
+)
 from .mock_data import categories, images, start_urls
 import string
 import pyclbr
