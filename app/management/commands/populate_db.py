@@ -107,14 +107,20 @@ class Command(BaseCommand):
                     characteristics={
                         'Processor': 'i' + str(2 * random.randint(1, 4) + 1) + '-' + str(
                             random.randint(2000, 11986)) + 'H',
-                        'Graphic card': 'NVIDIA GeForce ' + (
-                            'GTX' if random.randint(0, 1) % 2 == 1 else 'RTX') + ' ' + str(
-                            random.randint(1000, 3200)) + ' (4 Go GDDR5)',
-                        'Screen': ['17.3"', '15.6"', '14"', '13.3"', '12"'][random.randint(0, 4)] + (
-                            '' if random.randint(0, 1) % 2 == 1 else 'Full') + ' HD',
-                        'RAM': str(random.randint(2, 128)) + ' Go DDR4',
+                        'Processor gen': '2th',
+                        'Processor cache': '2 MB',
+                        'Processor frequency': '1.92 GHz Up to 1.92 GHz',
+                        'Graphic card': 'NVIDIA GeForce ' + ('GTX' if random.randint(0, 1) % 2 == 1 else 'RTX')
+                                        + ' ' + str(random.randint(1000, 3200)) + ' (4 Go GDDR5)',
+                        'Screen Size': ['17.3"', '15.6"', '14"', '13.3"', '12"'][random.randint(0, 4)],
+                        'Screen Frequency': '144 MHz',
+                        'Screen Resolution':  ('' if random.randint(0, 1) % 2 == 1 else 'Full') + ' HD',
+                        'RAM': str(random.randint(2, 128)) + ' Go',
+                        'RAM Type': 'DDR4',
+                        'SSD': str(random.randint(128, 1024)) + ' Go',
+                        'Hard Disk': str(random.randint(128, 1024)) + ' Go',
                         'OS': ['FreeDos', 'Ubuntu', 'Windows'][random.randint(0, 2)],
-                        'color': ['black', 'red', 'blue', 'pink'][random.randint(0, 3)]
+                        'Color': ['black', 'red', 'blue', 'pink'][random.randint(0, 3)]
                     },
                     name='best computer ever ' + self.get_random_string(),
                     image_url=images[category.name][random.randint(0, len(images[category.name]) - 1)],
@@ -138,7 +144,7 @@ class Command(BaseCommand):
                         product=product,
                         url='https://www.wiki.tn/pc-portables-gamer/pc-portable-gamer-asus-zenbook-pro-duo-i9-10e-gen-32go-1to-ssd-32231.html',
                         vendor=vendors[random.randint(0, 4)],
-                        warranty=['1 ans', '2 ans', '3 ans', '4 ans', '5 ans'][random.randint(0, 4)],
+                        warranty=str(random.randint(1, 5)) + ' Year(s)',
                         registered_prices=registered_prices,
                     )
                     product_details.save()
