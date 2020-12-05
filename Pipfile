@@ -12,6 +12,9 @@ django-rest-knox = "*"
 django-mptt = "*"
 psycopg2 = "*"
 djangorestframework-recursive = "*"
+scrapy = "*"
+itemadapter = "*"
+scrapy_user_agents = "*"
 
 [requires]
 python_version = "3.8"
