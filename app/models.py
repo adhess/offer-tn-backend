@@ -93,4 +93,3 @@ class ScrapyItem(models.Model):
 
     __repr__ = __str__
 
-
