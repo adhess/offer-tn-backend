@@ -24,27 +24,6 @@ process = CrawlerProcess(get_project_settings())
 with open('conf.json', 'r') as f:
     regexes = json.load(f)
 
-# TODO get these parameters from the database
-# TODO find solution to duplicate products from different links having the wrong category
-mytek_urls = [
-    'https://www.mytek.tn/13-pc-portable#/gamer-oui',
-    'https://www.mytek.tn/13-pc-portable',
-    'https://www.mytek.tn/379-mac',
-    'https://www.mytek.tn/13-pc-portable#/type-ultrabook',
-]
-
-wiki_urls = [
-    'https://www.wiki.tn/c/pc-portable-120.html',
-    'https://www.wiki.tn/c/pc-portable-gamer-85.html',
-    'https://www.wiki.tn/c/macbook-568.html',
-    'https://www.wiki.tn/c/transformer-121.html',
-]
-
-
-# jumia_urls = ['https://jumia.com.tn/pc-gamer-2139/',
-#               'https://jumia.com.tn/pc-portables/',]
-
-
 mytek = Vendor.objects.get(name='mytek')
 wiki = Vendor.objects.get(name='wiki')
 
