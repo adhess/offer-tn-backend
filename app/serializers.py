@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.fields import ReadOnlyField
 
 from app.models import Category,  Vendor
 from app.models import Product
@@ -44,4 +45,4 @@ class ProductSerializers(serializers.ModelSerializer):
 class FilterSerializers(serializers.ModelSerializer):
     class Meta:
         model = Filter
-        fields = '__all__'
+        fields = ['fields']

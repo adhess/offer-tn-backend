@@ -3,7 +3,7 @@ import random
 from django.core.management.base import BaseCommand
 from django.db import transaction
 from app.models import (
-    Category, Vendor, StartUrl, ScrapyItem, Product, ProductVendorDetails
+    Category, Vendor, StartUrl, ScrapyItem, Product, ProductVendorDetails, Filter
 )
 from .mock_data import categories, images, start_urls
 import string
@@ -22,8 +22,15 @@ class Command(BaseCommand):
         parser.add_argument("-a", "--all", action="store_true", help="populate the entire database")
 
     def get_leaf_categories(self, arr, data, parent):
+        """
+        save all categories and filters
+        """
         category = Category(name=data['name'], icon=data['icon'], active=data['active'], parent=parent)
         category.save()
+        filter_ = Filter(fields=['Processor', 'Processor gen', 'Processor cache', 'Processor frequency', 'Graphic card',
+                                'Screen Size', 'Screen Frequency', 'Screen Resolution', 'RAM', 'RAM Type', 'SSD',
+                                'Hard Disk', 'OS', 'Color'], category=category)
+        filter_.save()
         if 'children' in data:
             for d in data['children']:
                 self.get_leaf_categories(arr, d, category)
@@ -105,23 +112,25 @@ class Command(BaseCommand):
                 product = Product(
                     category=category,
                     characteristics={
-                        'Processor': 'i' + str(2 * random.randint(1, 4) + 1) + '-' + str(
-                            random.randint(2000, 11986)) + 'H',
-                        'Processor gen': '2th',
-                        'Processor cache': '2 MB',
+                        'Processor': ['i7-7920HQ', 'i7-7700HQ', 'i5-7440HQ', 'i5-7200U', 'i3-7100H', '3965U'][random.randint(0, 5)],
+                        'Processor gen': ['2th', '3th', '4th', '5th', '6th', '7th', '8th', '9th'][random.randint(0, 7)],
+                        'Processor cache': ['2 MB', '3 MB', '4 MB', '5 MB'][random.randint(0, 3)],
                         'Processor frequency': '1.92 GHz Up to 1.92 GHz',
-                        'Graphic card': 'NVIDIA GeForce ' + ('GTX' if random.randint(0, 1) % 2 == 1 else 'RTX')
-                                        + ' ' + str(random.randint(1000, 3200)) + ' (4 Go GDDR5)',
+                        'Graphic card': ['NVIDIA GEFORCE RTX3090',
+                                         'NVIDIA GEFORCE RTX3080',
+                                         'NVIDIA GEFORCE RTX3070',
+                                         'NVIDIA GEFORCE RTX3070ti'][random.randint(0, 3)],
                         'Screen Size': ['17.3"', '15.6"', '14"', '13.3"', '12"'][random.randint(0, 4)],
                         'Screen Frequency': '144 MHz',
                         'Screen Resolution':  ('' if random.randint(0, 1) % 2 == 1 else 'Full') + ' HD',
-                        'RAM': str(random.randint(2, 128)) + ' Go',
+                        'RAM': ['4 Go', '8 Go', '12 Go', '16 Go', '24 Go', '32 Go', '64 Go'][random.randint(0, 6)],
                         'RAM Type': 'DDR4',
-                        'SSD': str(random.randint(128, 1024)) + ' Go',
-                        'Hard Disk': str(random.randint(128, 1024)) + ' Go',
+                        'SSD': ['128 Gb', '256 Gb', '512 Gb', '1 Tb', '2 Tb', '3 Tb', '4 Tb'][random.randint(0, 6)],
+                        'Hard Disk': ['128 Gb', '256 Gb', '512 Gb', '1 Tb', '2 Tb', '3 Tb', '4 Tb'][random.randint(0, 6)],
                         'OS': ['FreeDos', 'Ubuntu', 'Windows'][random.randint(0, 2)],
                         'Color': ['black', 'red', 'blue', 'pink'][random.randint(0, 3)]
                     },
+                    minimum_price=random.randint(1000, 7000),
                     name='best computer ever ' + self.get_random_string(),
                     image_url=images[category.name][random.randint(0, len(images[category.name]) - 1)],
                     popularity=random.randint(15, 100),
