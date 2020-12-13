@@ -68,7 +68,7 @@ class FilterByCategory(APIView):
         kwargs['category_id'] = category_id
         products = Product.objects.filter(**kwargs)
 
-        price_range = self.get_new_price_range(products)
+        price_range = self.get_new_price_range(category_id)
 
         selected_price_range = self.request.query_params.getlist('price_range[]')
         if selected_price_range and len(selected_price_range) == 2:
@@ -80,10 +80,10 @@ class FilterByCategory(APIView):
         return Response({'checkbox_choices': checkbox_choices, 'price_range': price_range})
 
     @staticmethod
-    def get_new_price_range(products):
+    def get_new_price_range(category_id):
         return [
-            products.aggregate(Min('minimum_price'))['minimum_price__min'],
-            products.aggregate(Max('minimum_price'))['minimum_price__max'],
+            Product.objects.filter(category_id=category_id).aggregate(Min('minimum_price'))['minimum_price__min'],
+            Product.objects.filter(category_id=category_id).aggregate(Max('minimum_price'))['minimum_price__max'],
         ]
 
     @staticmethod
