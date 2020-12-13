@@ -75,9 +75,9 @@ class FilterByCategory(APIView):
             products = products.filter(minimum_price__gte=selected_price_range[0])
             products = products.filter(minimum_price__lte=selected_price_range[1])
 
-        checkbox_choices = self.get_new_checkbox_choices(category_id, products)
+        specs = self.get_new_specs(category_id, products)
 
-        return Response({'checkbox_choices': checkbox_choices, 'price_range': price_range})
+        return Response({'specs': specs, 'price_range': price_range})
 
     @staticmethod
     def get_new_price_range(category_id):
@@ -87,8 +87,8 @@ class FilterByCategory(APIView):
         ]
 
     @staticmethod
-    def get_new_checkbox_choices(category_id, products):
-        checkbox_choices = []
+    def get_new_specs(category_id, products):
+        specs = []
         for propertyName in Filter.objects.get(category_id=category_id).fields:
             values = []
             for value in products.values_list(f'characteristics__{propertyName}', flat=True).distinct():
@@ -97,21 +97,21 @@ class FilterByCategory(APIView):
                     'count': products.filter(**{f'characteristics__{propertyName}': value}).distinct().count()
                 })
             if values:
-                checkbox_choices.append({
+                specs.append({
                     'name': propertyName,
                     'values': values
                 })
-        return checkbox_choices
+        return specs
 
 
 def get_kwargs(self):
-    params = self.request.query_params.get('checkbox_choices')
-    checkbox_choices_query = {}
+    params = self.request.query_params.get('checked_specs')
+    specs = {}
     if params:
-        checkbox_choices_query = json.loads(params)
+        specs = json.loads(params)
     kwargs = {
-        f'characteristics__{field.rstrip("[]")}__in': checkbox_choices_query[field]
-        for field in checkbox_choices_query
+        f'characteristics__{field.rstrip("[]")}__in': specs[field]
+        for field in specs
         if field != 'category_id' and field != 'ordering' and field != 'price_range[]'
     }
     return kwargs
