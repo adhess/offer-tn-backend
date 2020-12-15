@@ -1,19 +1,19 @@
 import json
 from django.db.models import Q, Max, Min
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, filters
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from app.serializers import *
 
 
-class ProductsViewSet(viewsets.ModelViewSet):
+class ProductsViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = ProductSerializers
-    http_method_names = ['get']
     permission_classes = [
         permissions.AllowAny
     ]
-    ordering_fields = ['popularity']
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ['minimum_price', 'popularity', 'name']
 
     def get_queryset(self):
         kwargs = get_kwargs(self=self)
@@ -27,13 +27,7 @@ class ProductsViewSet(viewsets.ModelViewSet):
             kwargs['minimum_price__gte'] = selected_price_range[0]
             kwargs['minimum_price__lte'] = selected_price_range[1]
 
-        products = Product.objects.filter(**kwargs)
-
-        order = self.request.query_params.get('ordering')
-        if order is not None:
-            products = products.order_by(order)
-
-        return products
+        return Product.objects.filter(**kwargs)
 
     @staticmethod
     def get_category_involved(category_id):

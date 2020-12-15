@@ -108,7 +108,7 @@ class Command(BaseCommand):
 
     def _populate_product(self, leaf_categories=None, vendors=None):
         for category in leaf_categories:
-            for k in range(30, 100):
+            for k in range(0, random.randint(70, 270)):
                 product = Product(
                     category=category,
                     characteristics={
