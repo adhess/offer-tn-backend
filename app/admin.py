@@ -20,7 +20,7 @@ class VendorAdmin(admin.ModelAdmin):
 
 @admin.register(StartUrl)
 class StartUrlAdmin(admin.ModelAdmin):
-    list_display = ('url', 'category', 'item', 'vendor')
+    list_display = ('start_url', 'category', 'item', 'vendor')
 
 
 @admin.register(ScrapyItem)
@@ -35,7 +35,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(ProductVendorDetails)
 class ProductVendorDetailsAdmin(admin.ModelAdmin):
-    list_display = ('product', 'vendor', 'url', 'discount_available', 'warranty', 'inventory_state', 'registered_prices')
+    list_display = ('product', 'vendor', 'product_url', 'discount_available', 'warranty', 'inventory_state', 'registered_prices')
 
 
 

@@ -32,7 +32,7 @@ for vendor in (mytek, wiki):
     css_selectors = vendor.css_selectors
     process.crawl(MytekSpider,
                   name=vendor.name,
-                  urls=(url.url for url in urls),
+                  urls=(url.start_url for url in urls),
                   categories=(url.category for url in urls),
                   items=(url.item.name for url in urls),
                   product_re=regexes,

@@ -100,7 +100,7 @@ class Command(BaseCommand):
                         if item.name in start_urls[vendor.name]:
                             if category.name in start_urls[vendor.name][item.name]:
                                 StartUrl.objects.create(
-                                    url=start_urls[vendor.name][item.name][category.name],
+                                    start_url=start_urls[vendor.name][item.name][category.name],
                                     category=category,
                                     vendor=vendor,
                                     item=ScrapyItem.objects.get(name='LaptopItem')
@@ -151,7 +151,7 @@ class Command(BaseCommand):
                         discount_available=random.randint(0, 1) % 2 == 1,
                         inventory_state=stat[random.randint(0, 3)],
                         product=product,
-                        url='https://www.wiki.tn/pc-portables-gamer/pc-portable-gamer-asus-zenbook-pro-duo-i9-10e-gen-32go-1to-ssd-32231.html',
+                        product_url='https://www.wiki.tn/pc-portables-gamer/pc-portable-gamer-asus-zenbook-pro-duo-i9-10e-gen-32go-1to-ssd-32231.html',
                         vendor=vendors[random.randint(0, 4)],
                         warranty=str(random.randint(1, 5)) + ' Year(s)',
                         registered_prices=registered_prices,

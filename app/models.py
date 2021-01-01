@@ -57,7 +57,7 @@ class ProductVendorDetails(models.Model):
 
     product = models.ForeignKey("Product", on_delete=models.CASCADE, related_name='details')
     vendor = models.ForeignKey("Vendor", on_delete=models.CASCADE)
-    url = models.URLField()
+    product_url = models.URLField()
     discount_available = models.BooleanField(default=False)
     warranty = models.CharField(max_length=50)
     inventory_state = models.CharField(
@@ -67,13 +67,13 @@ class ProductVendorDetails(models.Model):
     )
     registered_prices = ArrayField(models.DecimalField(max_digits=12, decimal_places=3))
 
-    def save(self):
+    def save(self, **kwargs):
         if self.inventory_state in ['IS', 'IT', 'OC']:
             product = self.product
             if self.registered_prices[-1] < product.minimum_price:
                 product.minimum_price = self.registered_prices[-1]
 
-        super().save()
+        super().save(**kwargs)
 
     def __str__(self):
         return f'{self.product} from {self.vendor}'
@@ -82,13 +82,13 @@ class ProductVendorDetails(models.Model):
 
 
 class StartUrl(models.Model):
-    url = models.URLField()
+    start_url = models.URLField()
     category = models.ForeignKey("Category", on_delete=models.CASCADE, related_name='start_urls')
     item = models.ForeignKey("ScrapyItem", on_delete=models.CASCADE)
     vendor = models.ForeignKey("Vendor", on_delete=models.CASCADE, related_name='start_urls')
 
     def __str__(self):
-        return f'{self.url}'
+        return f'{self.start_url}'
 
     __repr__ = __str__
 

@@ -1,10 +1,18 @@
 import json
-from django.db.models import Q, Max, Min
+from django.db.models import Max, Min
 from rest_framework import viewsets, permissions, filters
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.generics import get_object_or_404
 
-from app.serializers import *
+from app.models import ProductVendorDetails, Product, Category, Filter
+from app.serializers import ProductVendorDetailsSerializers, ProductSerializers, CategorySerializer
+
+
+class ProductVendorDetailsViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = ProductVendorDetails.objects.all()
+    serializer_class = ProductVendorDetailsSerializers
+    permission_classes = [permissions.AllowAny]
 
 
 class ProductsViewSet(viewsets.ReadOnlyModelViewSet):
@@ -31,24 +39,22 @@ class ProductsViewSet(viewsets.ReadOnlyModelViewSet):
 
     @staticmethod
     def get_category_involved(category_id):
-        return [p.id for p in list(
-            Category.objects.filter(
-                Q(children__isnull=True),
-                Q(parent__parent_id=category_id) | Q(parent_id=category_id) | Q(id=category_id)
-            )
-        )]
+        category = Category.objects.get(pk=category_id)
+        return category.get_descendants(include_self=True).filter(children__isnull=True)
 
 
-class CategoryViewSet(viewsets.ModelViewSet):
-    queryset = Category.objects.root_nodes()
+class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [
         permissions.AllowAny
     ]
     serializer_class = CategorySerializer
-    http_method_names = ['get']
 
-    def get_object(self):
-        return
+    def get_queryset(self):
+        lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
+        if lookup_url_kwarg in self.kwargs:
+            return Category.objects.all()
+        return Category.objects.root_nodes()
+
 
 
 class FilterByCategory(APIView):

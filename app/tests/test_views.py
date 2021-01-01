@@ -55,9 +55,3 @@ def test_category_view_set(api_client, create_category):
     }
 
 
-@pytest.mark.django_db
-@pytest.mark.parametrize('category_id', [17, 18, 20])
-def test_product_view_set(api_client, create_product, category_id):
-    url = reverse("products-list")
-    response = api_client.get(url, {"category_id": category_id})
-    assert response.status_code == 200

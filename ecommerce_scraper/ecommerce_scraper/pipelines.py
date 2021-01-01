@@ -28,7 +28,7 @@ class EcommerceScraperPipeline:
     def update_product_vendor_details(product_vendor_details, item):
         #Todo update remaoning fields
 
-        product_vendor_details.url = item['url']
+        product_vendor_details.product_url = item['url']
         product_vendor_details.warranty = item['warranty']
         product_vendor_details.registered_prices.append(item['price'])
 
