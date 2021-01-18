@@ -1,10 +1,5 @@
 from rest_framework import serializers
-
-from app.models import Category,  Vendor
-from app.models import Product
-from app.models import ProductVendorDetails
-from app.models import Filter
-
+from app.models import Category, Vendor, Product, ProductVendorDetails, Filter
 from rest_framework_recursive.fields import RecursiveField
 
 
@@ -33,7 +28,7 @@ class ProductVendorDetailsSerializers(serializers.HyperlinkedModelSerializer):
 
 
 class ProductSerializers(serializers.HyperlinkedModelSerializer):
-    details = serializers.HyperlinkedRelatedField(many=True, view_name='productvendordetails-detail', read_only=True)
+    details = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     url = serializers.HyperlinkedIdentityField(view_name='products-detail')
     category = serializers.HyperlinkedRelatedField(view_name='categories-detail', read_only=True)
 

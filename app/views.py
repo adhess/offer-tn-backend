@@ -3,16 +3,17 @@ from django.db.models import Max, Min
 from rest_framework import viewsets, permissions, filters
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.generics import get_object_or_404
 
 from app.models import ProductVendorDetails, Product, Category, Filter
 from app.serializers import ProductVendorDetailsSerializers, ProductSerializers, CategorySerializer
+from app.filters import M2MFilter
 
 
 class ProductVendorDetailsViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = ProductVendorDetails.objects.all()
     serializer_class = ProductVendorDetailsSerializers
     permission_classes = [permissions.AllowAny]
+    filter_backends = [M2MFilter]
 
 
 class ProductsViewSet(viewsets.ReadOnlyModelViewSet):
