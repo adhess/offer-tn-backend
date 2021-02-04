@@ -57,8 +57,8 @@ class MytekSpider(scrapy.Spider):
         product['reference'] = self.get_field(response, self.ref_selector).get()
         product["category"] = category
         product["url"] = response.url
-        product["image"] = self.get_field(response, self.image_selector).get() # TODO scrape all product images, not just one
-        product["price"] = self.format_price(self.get_field(response, self.price_selector).get(), 'TND', 'DT')
+        product["image"] = self.get_field(response, self.image_selector).get()
+        product["price"] = self.get_field(response, self.price_selector).get()
         specs = ', '.join(self.get_field(response, self.specs_selector).re('<[^>]*>([^<]*)<'))
         field_re = self.product_re[item]
         for field in product.fields:
@@ -72,11 +72,7 @@ class MytekSpider(scrapy.Spider):
                         break
         yield product
 
-    @staticmethod
-    def format_price(s, *subs):
-        for sub in subs:
-            s = s[:-len(sub)] if s.endswith(sub) else s
-        return float(s.replace(' ', '').replace(',', '.'))
+
 
     @staticmethod
     def get_field(response, selector=None):
