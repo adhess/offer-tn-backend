@@ -90,8 +90,6 @@ DATABASES = {
         'PORT': '5429',
     }
 }
-if os.environ.get('isHeroku', '') == 'true':
-    DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
