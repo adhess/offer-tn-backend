@@ -57,7 +57,6 @@ class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
         return Category.objects.root_nodes()
 
 
-
 class FilterByCategory(APIView):
     permission_classes = [
         permissions.AllowAny
@@ -77,7 +76,7 @@ class FilterByCategory(APIView):
             products = products.filter(minimum_price__lte=selected_price_range[1])
 
         specs = self.get_new_specs(category_id, products)
-
+        print({'specs': specs, 'price_range': price_range})
         return Response({'specs': specs, 'price_range': price_range})
 
     @staticmethod
@@ -93,10 +92,11 @@ class FilterByCategory(APIView):
         for propertyName in Filter.objects.get(category_id=category_id).fields:
             values = []
             for value in products.values_list(f'characteristics__{propertyName}', flat=True).distinct():
-                values.append({
-                    'name': value,
-                    'count': products.filter(**{f'characteristics__{propertyName}': value}).distinct().count()
-                })
+                if value:
+                    values.append({
+                        'name': value,
+                        'count': products.filter(**{f'characteristics__{propertyName}': value}).distinct().count()
+                    })
             if values:
                 specs.append({
                     'name': propertyName,
