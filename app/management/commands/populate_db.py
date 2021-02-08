@@ -11,7 +11,6 @@ import pyclbr
 import sys
 from pathlib import Path
 
-
 sys.path.append(str(Path('app').resolve().parent.joinpath('ecommerce_scraper', 'ecommerce_scraper')))
 
 
@@ -27,9 +26,23 @@ class Command(BaseCommand):
         """
         category = Category(name=data['name'], icon=data['icon'], active=data['active'], parent=parent)
         category.save()
-        filter_ = Filter(fields=['Processor', 'Processor gen', 'Processor cache', 'Processor frequency', 'Graphic card',
-                                'Screen Size', 'Screen Frequency', 'Screen Resolution', 'RAM', 'RAM Type', 'SSD',
-                                'Hard Disk', 'OS', 'Color'], category=category)
+        filter_ = Filter(fields=[
+            'screen_size',
+            'screen_resolution',
+            'screen_frequency',
+            'ssd',
+            'hard_disk',
+            'cpu',
+            'cpu_gen',
+            'cpu_frequency',
+            'cpu_cache',
+            'gpu',
+            'ram',
+            'ram_type',
+            'os',
+            'warranty',
+            'color',
+        ], category=category)
         filter_.save()
         if 'children' in data:
             for d in data['children']:
@@ -112,7 +125,8 @@ class Command(BaseCommand):
                 product = Product(
                     category=category,
                     characteristics={
-                        'Processor': ['i7-7920HQ', 'i7-7700HQ', 'i5-7440HQ', 'i5-7200U', 'i3-7100H', '3965U'][random.randint(0, 5)],
+                        'Processor': ['i7-7920HQ', 'i7-7700HQ', 'i5-7440HQ', 'i5-7200U', 'i3-7100H', '3965U'][
+                            random.randint(0, 5)],
                         'Processor gen': ['2th', '3th', '4th', '5th', '6th', '7th', '8th', '9th'][random.randint(0, 7)],
                         'Processor cache': ['2 MB', '3 MB', '4 MB', '5 MB'][random.randint(0, 3)],
                         'Processor frequency': '1.92 GHz Up to 1.92 GHz',
@@ -122,11 +136,12 @@ class Command(BaseCommand):
                                          'NVIDIA GEFORCE RTX3070ti'][random.randint(0, 3)],
                         'Screen Size': ['17.3"', '15.6"', '14"', '13.3"', '12"'][random.randint(0, 4)],
                         'Screen Frequency': '144 MHz',
-                        'Screen Resolution':  ('' if random.randint(0, 1) % 2 == 1 else 'Full') + ' HD',
+                        'Screen Resolution': ('' if random.randint(0, 1) % 2 == 1 else 'Full') + ' HD',
                         'RAM': ['4 Go', '8 Go', '12 Go', '16 Go', '24 Go', '32 Go', '64 Go'][random.randint(0, 6)],
                         'RAM Type': 'DDR4',
                         'SSD': ['128 Gb', '256 Gb', '512 Gb', '1 Tb', '2 Tb', '3 Tb', '4 Tb'][random.randint(0, 6)],
-                        'Hard Disk': ['128 Gb', '256 Gb', '512 Gb', '1 Tb', '2 Tb', '3 Tb', '4 Tb'][random.randint(0, 6)],
+                        'Hard Disk': ['128 Gb', '256 Gb', '512 Gb', '1 Tb', '2 Tb', '3 Tb', '4 Tb'][
+                            random.randint(0, 6)],
                         'OS': ['FreeDos', 'Ubuntu', 'Windows'][random.randint(0, 2)],
                         'Color': ['black', 'red', 'blue', 'pink'][random.randint(0, 3)]
                     },
