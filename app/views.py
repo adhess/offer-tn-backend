@@ -64,8 +64,7 @@ class FilterByCategory(APIView):
 
     def get(self, request):
         category_id = self.request.query_params.get('category_id')
-        kwargs = get_kwargs(self=self)
-        kwargs['category_id'] = category_id
+        kwargs = {'category_id': category_id}
         products = Product.objects.filter(**kwargs)
 
         price_range = self.get_new_price_range(category_id)
@@ -75,8 +74,7 @@ class FilterByCategory(APIView):
             products = products.filter(minimum_price__gte=selected_price_range[0])
             products = products.filter(minimum_price__lte=selected_price_range[1])
 
-        specs = self.get_new_specs(category_id, products)
-        print({'specs': specs, 'price_range': price_range})
+        specs = self.get_new_specs(self, category_id, products)
         return Response({'specs': specs, 'price_range': price_range})
 
     @staticmethod
@@ -87,15 +85,17 @@ class FilterByCategory(APIView):
         ]
 
     @staticmethod
-    def get_new_specs(category_id, products):
+    def get_new_specs(self, category_id, products):
         specs = []
+        kwargs = get_kwargs(self=self)
+        kwargs['category_id'] = category_id
         for propertyName in Filter.objects.get(category_id=category_id).fields:
             values = []
             for value in products.values_list(f'characteristics__{propertyName}', flat=True).distinct():
                 if value:
                     values.append({
                         'name': value,
-                        'count': products.filter(**{f'characteristics__{propertyName}': value}).distinct().count()
+                        'count': products.filter(**kwargs).filter(**{f'characteristics__{propertyName}': value}).distinct().count()
                     })
             if values:
                 specs.append({
