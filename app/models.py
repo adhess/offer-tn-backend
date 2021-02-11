@@ -19,7 +19,7 @@ class Vendor(models.Model):
 class Category(MPTTModel):
     name = models.CharField(max_length=50)
     icon = models.CharField(max_length=150, blank=True)
-    active = models.BooleanField(default=False)
+    isActive = models.BooleanField(default=False)
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
 
     def __str__(self):
