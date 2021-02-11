@@ -10,7 +10,7 @@ from app.models import (
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'icon', 'active', 'parent')
+    list_display = ('name', 'icon', 'isActive', 'parent')
 
 
 @admin.register(Vendor)

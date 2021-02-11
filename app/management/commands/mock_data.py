@@ -347,37 +347,37 @@ categories = [
     {
         "name": "Clothing",
         "icon": "fab fa-pied-piper-hat",
-        "active": False
+        "isActive": False
     }, {
         "name": "Food",
         "icon": "fas fa-pizza-slice",
-        "active": False
+        "isActive": False
     }, {
         "name": "Electronics",
         "icon": "fab fa-teamspeak",
-        "active": True,
+        "isActive": True,
         "children": [
             {
                 "name": "Computers",
                 "icon": "fas fa-laptop",
-                "active": True,
+                "isActive": True,
                 "children": [
                     {
                         "name": "Regular laptop",
                         "icon": "",
-                        "active": True
+                        "isActive": True
                     }, {
                         "name": "Gaming laptop",
                         "icon": "",
-                        "active": True
+                        "isActive": True
                     }, {
                         "name": "Ultrabook",
                         "icon": "",
-                        "active": True
+                        "isActive": True
                     }, {
                         "name": "Macbook",
                         "icon": "",
-                        "active": True
+                        "isActive": True
                     },
 
                 ]
@@ -385,30 +385,30 @@ categories = [
             {
                 "name": "SmartPhone",
                 "icon": "fas fa-mobile-alt",
-                "active": False
+                "isActive": False
             },
             {
                 "name": "Camera",
                 "icon": "fas fa-camera-retro",
-                "active": False
+                "isActive": False
             }
         ]
     }, {
         "name": "Beauty",
         "icon": "fab fa-studiovinari",
-        "active": False
+        "isActive": False
     }, {
         "name": "Travel",
         "icon": "fas fa-fighter-jet",
-        "active": False
+        "isActive": False
     }, {
         "name": "Jobs",
         "icon": "fas fa-search-dollar",
-        "active": False
+        "isActive": False
     }, {
         "name": "Painting",
         "icon": "fas fa-paint-brush",
-        "active": False
+        "isActive": False
     }
 ]
 
