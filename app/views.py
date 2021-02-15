@@ -44,6 +44,18 @@ class ProductsViewSet(viewsets.ReadOnlyModelViewSet):
         return category.get_descendants(include_self=True).filter(children__isnull=True)
 
 
+class PopularProductsLandingPage(viewsets.ReadOnlyModelViewSet):
+    serializer_class = ProductSerializers
+    permission_classes = [
+        permissions.AllowAny
+    ]
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ['popularity']
+
+    def get_queryset(self):
+        return Product.objects.all().order_by('popularity')[:12]
+
+
 class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [
         permissions.AllowAny
@@ -95,7 +107,8 @@ class FilterByCategory(APIView):
                 if value:
                     values.append({
                         'name': value,
-                        'count': products.filter(**kwargs).filter(**{f'characteristics__{propertyName}': value}).distinct().count()
+                        'count': products.filter(**kwargs).filter(
+                            **{f'characteristics__{propertyName}': value}).distinct().count()
                     })
             if values:
                 specs.append({
