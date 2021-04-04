@@ -72,12 +72,10 @@ class MytekSpider(scrapy.Spider):
                         break
         yield product
 
-
-
     @staticmethod
     def get_field(response, selector=None):
         if selector is None:
-            return
+            return scrapy.selector.unified.SelectorList()
         return response.css(selector)
 
     def errback_httpbin(self, failure):
