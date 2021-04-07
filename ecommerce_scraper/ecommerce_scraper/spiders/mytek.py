@@ -65,7 +65,7 @@ class MytekSpider(scrapy.Spider):
             if not product.get(field):
                 patterns, formats = field_re[field].values()
                 for pattern, product_format in zip(patterns, formats):
-                    cp = re.compile(pattern)
+                    cp = re.compile(pattern,  re.IGNORECASE)
                     curr_match = cp.search(specs)
                     if curr_match:
                         product[field] = product_format.format(*(curr_match.groups()))
