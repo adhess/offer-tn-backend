@@ -11,7 +11,7 @@ def api_client():
 @pytest.fixture
 def create_category(db):
     def make_category(name, parent=None, is_active=False, icon=""):
-        return Category.objects.create(name=name, parent=parent, active=is_active, icon=icon)
+        return Category.objects.create(name=name, parent=parent, isActive=is_active, icon=icon)
     return make_category
 
 

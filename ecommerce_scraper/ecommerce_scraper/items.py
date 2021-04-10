@@ -20,10 +20,10 @@ class GeneralItem(scrapy.Item):
 
 class LaptopItem(GeneralItem):
     os = scrapy.Field()
-    reference = scrapy.Field()
     cpu = scrapy.Field()
     cpu_frequency = scrapy.Field()
     cpu_gen = scrapy.Field()
+    cpu_series = scrapy.Field()
     cpu_cache = scrapy.Field()
     ram = scrapy.Field()
     ram_type = scrapy.Field()

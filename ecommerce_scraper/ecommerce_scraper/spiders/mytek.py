@@ -65,19 +65,17 @@ class MytekSpider(scrapy.Spider):
             if not product.get(field):
                 patterns, formats = field_re[field].values()
                 for pattern, product_format in zip(patterns, formats):
-                    cp = re.compile(pattern)
+                    cp = re.compile(pattern,  re.IGNORECASE)
                     curr_match = cp.search(specs)
                     if curr_match:
                         product[field] = product_format.format(*(curr_match.groups()))
                         break
         yield product
 
-
-
     @staticmethod
     def get_field(response, selector=None):
         if selector is None:
-            return
+            return scrapy.selector.unified.SelectorList()
         return response.css(selector)
 
     def errback_httpbin(self, failure):

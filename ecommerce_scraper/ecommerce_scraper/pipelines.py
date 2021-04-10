@@ -63,6 +63,7 @@ class EcommerceScraperPipeline:
                     characteristics={
                         'os': adapter.get('os'),
                         'cpu': adapter.get('cpu'),
+                        'cpu_series': adapter.get('cpu_series'),
                         'cpu_frequency': adapter.get('cpu_frequency'),
                         'cpu_gen': adapter.get('cpu_gen'),
                         'cpu_cache': adapter.get('cpu_cache'),
