@@ -5,7 +5,7 @@ from django.db import transaction
 from app.models import (
     Category, Vendor, StartUrl, Product, ProductVendorDetails, Filter
 )
-from .mock_data import categories, images, start_urls
+from ._mock_data import categories, images, start_urls
 import string
 
 
