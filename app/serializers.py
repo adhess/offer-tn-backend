@@ -8,7 +8,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ['id', 'name', 'children', 'icon', 'isActive']
+        fields = ['id', 'name', 'children', 'icon', 'is_active']
 
 
 class VendorSerializer(serializers.ModelSerializer):
@@ -23,8 +23,8 @@ class ProductVendorDetailsSerializers(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = ProductVendorDetails
-        fields = ['id', 'url', 'product', 'vendor', 'product_url', 'registered_prices',
-                  'discount_available', 'warranty', 'inventory_state']
+        fields = ['id', 'url', 'product', 'vendor', 'link_in_vendor_website', 'registered_prices',
+                  'is_discount_available', 'warranty', 'inventory_state']
 
 
 class ProductSerializers(serializers.HyperlinkedModelSerializer):
@@ -34,7 +34,7 @@ class ProductSerializers(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Product
-        fields = ['id', 'url', 'name', 'ref', 'category', 'details', 'characteristics', 'popularity', 'image_url', 'minimum_price']
+        fields = ['id', 'url', 'name', 'reference', 'category', 'details', 'characteristics', 'popularity', 'image_url', 'minimum_price']
 
 
 class FilterSerializers(serializers.ModelSerializer):

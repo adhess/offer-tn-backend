@@ -3,15 +3,11 @@ import random
 from django.core.management.base import BaseCommand
 from django.db import transaction
 from app.models import (
-    Category, Vendor, StartUrl, ScrapyItem, Product, ProductVendorDetails, Filter
+    Category, Vendor, StartUrl, Product, ProductVendorDetails, Filter
 )
 from .mock_data import categories, images, start_urls
 import string
-import pyclbr
-import sys
-from pathlib import Path
 
-sys.path.append(str(Path('app').resolve().parent.joinpath('ecommerce_scraper', 'ecommerce_scraper')))
 
 
 class Command(BaseCommand):
@@ -24,7 +20,7 @@ class Command(BaseCommand):
         """
         save all categories and filters
         """
-        category = Category(name=data['name'], icon=data['icon'], isActive=data['isActive'], parent=parent)
+        category = Category(name=data['name'], icon=data['icon'], isActive=data['is_active'], parent=parent)
         category.save()
         filter_ = Filter(fields=[
             'screen_size',
@@ -99,25 +95,16 @@ class Command(BaseCommand):
         return leaf_categories
 
     @staticmethod
-    def _populate_scrapy_items():
-        module_name = 'items'
-        module_info = pyclbr.readmodule(module_name)
-        return [ScrapyItem.objects.create(name=item.name) for item in module_info.values()]
-
-    @staticmethod
-    def _populate_start_urls(leaf_categories, vendors, scrapy_items):
+    def _populate_start_urls(leaf_categories, vendors):
         for vendor in vendors:
-            for item in scrapy_items:
-                for category in leaf_categories:
-                    if vendor.name in start_urls:
-                        if item.name in start_urls[vendor.name]:
-                            if category.name in start_urls[vendor.name][item.name]:
-                                StartUrl.objects.create(
-                                    start_url=start_urls[vendor.name][item.name][category.name],
-                                    category=category,
-                                    vendor=vendor,
-                                    item=ScrapyItem.objects.get(name='LaptopItem')
-                                )
+            for category in leaf_categories:
+                if vendor.name in start_urls:
+                    if category.name in start_urls[vendor.name]:
+                        StartUrl.objects.create(
+                            start_url=start_urls[vendor.name][category.name],
+                            category=category,
+                            vendor=vendor,
+                        )
 
     def _populate_product(self, leaf_categories=None, vendors=None):
         for category in leaf_categories:
@@ -176,15 +163,14 @@ class Command(BaseCommand):
     @transaction.atomic()
     def handle(self, *args, **options):
         self.stdout.write("Deleting old data...")
-        for model in [ProductVendorDetails, Product, StartUrl, ScrapyItem, Vendor, Category]:
+        for model in [ProductVendorDetails, Product, StartUrl, Vendor, Category]:
             model.objects.all().delete()
 
         self.stdout.write("Creating new data...")
 
         leaf_categories = self._populate_categories()
         vendors = self._populate_vendors()
-        scrapy_items = self._populate_scrapy_items()
-        self._populate_start_urls(leaf_categories, vendors, scrapy_items)
+        self._populate_start_urls(leaf_categories, vendors)
         if options["all"]:
             self._populate_product(leaf_categories, vendors)
 

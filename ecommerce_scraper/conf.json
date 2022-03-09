@@ -1,5 +1,5 @@
 {
-  "LaptopItem" : {
+  "Computers" : {
     "screen_size" : {"patterns" : ["\\b(\\d{2}(?:\\.[1-9])?)\\W?(?:[\"″]|(?:pouces))"], "formats" : ["{0}\""]},
 
     "ssd" : {"patterns": ["\\b(\\d+) G[OB] (?:ssd|nvme)" ], "formats":["{0} GB"]},

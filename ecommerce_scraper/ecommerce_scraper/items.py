@@ -6,7 +6,7 @@
 import scrapy
 
 
-class GeneralItem(scrapy.Item):
+class ProductItem(scrapy.Item):
     name = scrapy.Field()
     reference = scrapy.Field()
     category = scrapy.Field()
@@ -15,28 +15,7 @@ class GeneralItem(scrapy.Item):
     # state = scrapy.Field()
     # discount = scrapy.Field()
     warranty = scrapy.Field()
-    image = scrapy.Field()
-
-
-class LaptopItem(GeneralItem):
-    os = scrapy.Field()
-    cpu = scrapy.Field()
-    cpu_frequency = scrapy.Field()
-    cpu_gen = scrapy.Field()
-    cpu_series = scrapy.Field()
-    cpu_cache = scrapy.Field()
-    ram = scrapy.Field()
-    ram_type = scrapy.Field()
-    # screen_type = scrapy.Field()
-    screen_size = scrapy.Field()
-    screen_resolution = scrapy.Field()
-    screen_frequency = scrapy.Field()
-    # touch_screen = scrapy.Field()
-    hard_disk = scrapy.Field()
-    ssd = scrapy.Field()
-    gpu = scrapy.Field()
-    # connections = scrapy.Field()
-    # bluetooth = scrapy.Field()
-    color = scrapy.Field()
-
-
+    image_url = scrapy.Field()
+    description = scrapy.Field()
+    characteristics = scrapy.Field()
+    product = scrapy.Field()

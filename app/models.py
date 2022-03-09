@@ -19,7 +19,7 @@ class Vendor(models.Model):
 class Category(MPTTModel):
     name = models.CharField(max_length=50)
     icon = models.CharField(max_length=150, blank=True)
-    isActive = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=False)
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children')
 
     def __str__(self):
@@ -30,7 +30,7 @@ class Category(MPTTModel):
 
 class Product(models.Model):
     name = models.CharField(max_length=255)
-    ref = models.CharField(max_length=255)
+    reference = models.CharField(max_length=255)
     characteristics = models.JSONField(default=dict)
     popularity = models.IntegerField(null=True)
     category = models.ForeignKey("Category", on_delete=models.CASCADE, related_name='products')
@@ -57,8 +57,8 @@ class ProductVendorDetails(models.Model):
 
     product = models.ForeignKey("Product", on_delete=models.CASCADE, related_name='details')
     vendor = models.ForeignKey("Vendor", on_delete=models.CASCADE)
-    product_url = models.URLField()
-    discount_available = models.BooleanField(default=False)
+    link_in_vendor_website = models.URLField()
+    is_discount_available = models.BooleanField(default=False)
     warranty = models.CharField(max_length=50)
     inventory_state = models.CharField(
         max_length=5,
@@ -84,7 +84,6 @@ class ProductVendorDetails(models.Model):
 class StartUrl(models.Model):
     start_url = models.URLField()
     category = models.ForeignKey("Category", on_delete=models.CASCADE, related_name='start_urls')
-    item = models.ForeignKey("ScrapyItem", on_delete=models.CASCADE)
     vendor = models.ForeignKey("Vendor", on_delete=models.CASCADE, related_name='start_urls')
 
     def __str__(self):
@@ -92,12 +91,4 @@ class StartUrl(models.Model):
 
     __repr__ = __str__
 
-
-class ScrapyItem(models.Model):
-    name = models.CharField(max_length=50)
-
-    def __str__(self):
-        return f'{self.name}Item'
-
-    __repr__ = __str__
 

@@ -31,11 +31,11 @@ def test_category_view_set(api_client, create_category):
                                 'name': laptop.name,
                                 'children': [],
                                 'icon': '',
-                                'isActive': False
+                                'is_active': False
                             }
                         ],
                         'icon': '',
-                        'isActive': False
+                        'is_active': False
 
                     },
                     {
@@ -43,11 +43,11 @@ def test_category_view_set(api_client, create_category):
                         'name': phone.name,
                         'children': [],
                         'icon': '',
-                        'isActive': False
+                        'is_active': False
                     }
                 ],
                 'icon': "",
-                'isActive': False,
+                'is_active': False,
 
             }
         ]

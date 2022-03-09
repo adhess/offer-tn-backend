@@ -347,37 +347,37 @@ categories = [
     {
         "name": "Clothing",
         "icon": "fab fa-pied-piper-hat",
-        "isActive": False
+        "is_active": False
     }, {
         "name": "Food",
         "icon": "fas fa-pizza-slice",
-        "isActive": False
+        "is_active": False
     }, {
         "name": "Electronics",
         "icon": "fab fa-teamspeak",
-        "isActive": True,
+        "is_active": True,
         "children": [
             {
                 "name": "Computers",
                 "icon": "fas fa-laptop",
-                "isActive": True,
+                "is_active": True,
                 "children": [
                     {
                         "name": "Regular laptop",
                         "icon": "",
-                        "isActive": True
+                        "is_active": True
                     }, {
                         "name": "Gaming laptop",
                         "icon": "",
-                        "isActive": True
+                        "is_active": True
                     }, {
                         "name": "Ultrabook",
                         "icon": "",
-                        "isActive": True
+                        "is_active": True
                     }, {
                         "name": "Macbook",
                         "icon": "",
-                        "isActive": True
+                        "is_active": True
                     },
 
                 ]
@@ -385,49 +385,44 @@ categories = [
             {
                 "name": "SmartPhone",
                 "icon": "fas fa-mobile-alt",
-                "isActive": False
+                "is_active": False
             },
             {
                 "name": "Camera",
                 "icon": "fas fa-camera-retro",
-                "isActive": False
+                "is_active": False
             }
         ]
     }, {
         "name": "Beauty",
         "icon": "fab fa-studiovinari",
-        "isActive": False
+        "is_active": False
     }, {
         "name": "Travel",
         "icon": "fas fa-fighter-jet",
-        "isActive": False
+        "is_active": False
     }, {
         "name": "Jobs",
         "icon": "fas fa-search-dollar",
-        "isActive": False
+        "is_active": False
     }, {
         "name": "Painting",
         "icon": "fas fa-paint-brush",
-        "isActive": False
+        "is_active": False
     }
 ]
 
 start_urls = {
     'mytek': {
-        "LaptopItem": {
             'Regular laptop': 'https://www.mytek.tn/13-pc-portable#/gamer-non',
             'Gaming laptop': 'https://www.mytek.tn/13-pc-portable#/gamer-oui',
             'Ultrabook': 'https://www.mytek.tn/13-pc-portable#/type-ultrabook',
             'Macbook': 'https://www.mytek.tn/379-mac'
-        },
     },
     'wiki': {
-        "LaptopItem": {
             'Regular laptop': 'https://www.wiki.tn/c/pc-portable-120.html',
             'Gaming laptop': 'https://www.wiki.tn/c/pc-portable-gamer-85.html',
             'Ultrabook': 'https://www.wiki.tn/c/transformer-121.html',
             'Macbook': 'https://www.wiki.tn/c/macbook-568.html',
-        },
     }
-
 }

@@ -1,5 +1,4 @@
-import re
-import ecommerce_scraper.items as items
+from ..loaders import ProductLoader
 import scrapy
 
 from scrapy.spidermiddlewares.httperror import HttpError
@@ -13,77 +12,37 @@ class MytekSpider(scrapy.Spider):
     """
 
     def start_requests(self):
-        for u, cat, item in zip(self.urls, self.categories, self.items):
+        for u, cat in zip(self.urls, self.categories):
             yield scrapy.Request(u, callback=self.parse,
-                                 cb_kwargs=dict(category=cat, item=item),
+                                 cb_kwargs=dict(category=cat),
                                  errback=self.errback_httpbin,
                                  dont_filter=False,
                                  )
 
-    def parse(self, response, category=None, item=None, **kwargs):
+    def parse(self, response, category=None, **kwargs):
         product_links = response.css(self.product_selector)
         yield from response.follow_all(product_links,
                                        callback=self.parse_product,
-                                       cb_kwargs=dict(category=category, item=item))
+                                       cb_kwargs=dict(category=category))
         pagination_link = response.css(self.pagination_selector)
         yield from response.follow_all(pagination_link,
                                        callback=self.parse,
-                                       cb_kwargs=dict(category=category, item=item))
+                                       cb_kwargs=dict(category=category))
 
-    # def parse_laptop(self, response, category=None):
-    #     laptop = scrapy_items.LaptopItem()
-    #     laptop['name'] = response.css(self.name_selector).get()
-    #     laptop['reference'] = response.css(self.ref_selector).get()
-    #     laptop["category"] = category
-    #     laptop["url"] = response.url
-    #     laptop["image"] = response.css(self.image_selector).get()
-    #     laptop["price"] = response.css(self.price_selector).get()
-    #     specs = ', '.join(response.css(self.specs_selector).re('<[^>]*>([^<]*)<'))
-    #     field_re = getattr(self, 'laptop_re')
-    #     for field in laptop.fields:
-    #         if not laptop.get(field):
-    #             patterns, formats = field_re[field].values()
-    #             for i, (pattern, product_format) in enumerate(zip(patterns, formats)):
-    #                 cp = re.compile(pattern)
-    #                 curr_match = cp.search(specs)
-    #                 if curr_match:
-    #                     laptop[field] = product_format.format(*(curr_match.groups()))
-    #                     break
-    #     yield laptop
-
-    def parse_product(self, response, category: str, item: str):
-        product = getattr(items, f'{item}')()
-        product['name'] = self.get_field(response, self.name_selector).get()
-        product['reference'] = self.get_field(response, self.ref_selector).get()
-        product["category"] = category
-        product["url"] = response.url
-        product["image"] = self.get_field(response, self.image_selector).get()
-        product["price"] = self.get_field(response, self.price_selector).get()
-        specs = ', '.join(self.get_field(response, self.specs_selector).re('<[^>]*>([^<]*)<'))
-        field_re = self.product_re[item]
-        for field in product.fields:
-            if not product.get(field):
-                patterns, formats = field_re[field].values()
-                for pattern, product_format in zip(patterns, formats):
-                    cp = re.compile(pattern,  re.IGNORECASE)
-                    curr_match = cp.search(specs)
-                    if curr_match:
-                        product[field] = product_format.format(*(curr_match.groups()))
-                        break
-        yield product
-
-    @staticmethod
-    def get_field(response, selector=None):
-        if selector is None:
-            return scrapy.selector.unified.SelectorList()
-        return response.css(selector)
+    def parse_product(self, response, category):
+        product_loader = ProductLoader(response=response)
+        product_loader.add_value("category", category)
+        product_loader.add_value("url", response.url)
+        product_loader.add_css('name', self.name_selector)
+        product_loader.add_css('reference', self.ref_selector)
+        product_loader.add_css("image_url",  self.image_selector)
+        product_loader.add_css("price",  self.price_selector)
+        product_loader.add_css("description", self.specs_selector)
+        yield product_loader.load_item()
 
     def errback_httpbin(self, failure):
         # log all failures
         self.logger.error(repr(failure))
-
-        # in case you want to do something special for some errors,
-        # you may need the failure's type:
 
         if failure.check(HttpError):
             # these exceptions come from HttpError spider middleware
