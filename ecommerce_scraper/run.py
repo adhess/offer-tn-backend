@@ -21,8 +21,6 @@ from app.models import Vendor, StartUrl
 
 process = CrawlerProcess(get_project_settings())
 
-with open('conf.json', 'r') as f:
-    regexes = json.load(f)
 
 mytek = Vendor.objects.get(name='mytek')
 wiki = Vendor.objects.get(name='wiki')
@@ -34,8 +32,7 @@ for vendor in (mytek, wiki):
                   name=vendor.name,
                   urls=(url.start_url for url in urls),
                   categories=(url.category for url in urls),
-                  items=(url.item.name for url in urls),
-                  product_re=regexes,
+                  vendor=vendor,
                   **css_selectors,
                   )
 
@@ -53,39 +50,6 @@ for vendor in (mytek, wiki):
 #               ref_selector='.editable::text',
 #               name_selector='h1::text',
 #               price_selector='#our_price_display::text',
-#               product_re=regexes,
-#               )
-#
-# process.crawl(MytekSpider,
-#               name='wiki',
-#               urls=wiki_urls,
-#               categories=categories,
-#               items=items,
-#               product_selector='#product_list .product-name',
-#               pagination_selector='#pagination_next_bottom a',
-#               specs_selector='td',
-#               image_selector='#bigpic::attr(src)',
-#               ref_selector='.editable::text',
-#               name_selector='h1::text',
-#               price_selector='#our_price_display::text',
-#               product_re=regexes,
-#               )
-
-
-# TODO make the scraper work with Jumia
-
-# process.crawl(MytekSpider,
-#               name='jumia',
-#               urls=jumia_urls,
-#               categories=categories,
-#               scrapy_items=scrapy_items,
-#               product_selector='.info .name',
-#               pagination_selector='.pg:nth-last-child(2)',
-#               specs_selector='..-pam li',
-#               image_selector='#imgs .-fh.-fw::attr(data-src)',
-#               ref_selector=None,
-#               name_selector='.-pts.-pbxs::text',
-#               price_selector='.-fs24::text',
 #               product_re=regexes,
 #               )
 

@@ -1,5 +1,12 @@
 import pytest
 from app.models import Category, Product, ProductVendorDetails, Vendor
+from app.model_factories import CategoryFactory, VendorFactory, ProductFactory, ProductVendorDetailsFactory
+from pytest_factoryboy import register
+
+register(CategoryFactory)
+register(VendorFactory)
+register(ProductFactory)
+register(ProductVendorDetailsFactory)
 
 
 @pytest.fixture
@@ -11,7 +18,7 @@ def api_client():
 @pytest.fixture
 def create_category(db):
     def make_category(name, parent=None, is_active=False, icon=""):
-        return Category.objects.create(name=name, parent=parent, isActive=is_active, icon=icon)
+        return Category.objects.create(name=name, parent=parent, is_active=is_active, icon=icon)
     return make_category
 
 

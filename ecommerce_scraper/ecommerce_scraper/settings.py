@@ -57,8 +57,8 @@ COOKIES_ENABLED = False
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
     # 'ecommerce_scraper.middlewares.EcommerceScraperDownloaderMiddleware': 543,
-    # 'scrapy_proxy_pool.middlewares.ProxyPoolMiddleware': 610,
-    # 'scrapy_proxy_pool.middlewares.BanDetectionMiddleware': 620,
+    'scrapy_proxy_pool.middlewares.ProxyPoolMiddleware': 610,
+    'scrapy_proxy_pool.middlewares.BanDetectionMiddleware': 620,
     'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
     'scrapy_user_agents.middlewares.RandomUserAgentMiddleware': 400,
 
@@ -73,7 +73,10 @@ DOWNLOADER_MIDDLEWARES = {
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'ecommerce_scraper.pipelines.EcommerceScraperPipeline': 300,
+    'ecommerce_scraper.pipelines.InfoExtractionPipeline': 300,
+    'ecommerce_scraper.pipelines.ProductPipeline': 301,
+    'ecommerce_scraper.pipelines.ProductVendorDetailsPipeline': 302,
+
     # 'ecommerce_scraper.pipelines.JsonWriterPipeline': 300,
 }
 
@@ -92,10 +95,14 @@ ITEM_PIPELINES = {
 
 # Enable and configure HTTP caching (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html#httpcache-middleware-settings
-# HTTPCACHE_ENABLED = True
-# HTTPCACHE_EXPIRATION_SECS = 0
-# HTTPCACHE_DIR = 'httpcache'
-# HTTPCACHE_IGNORE_HTTP_CODES = []
-# HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+HTTPCACHE_POLICY = 'scrapy.extensions.httpcache.DummyPolicy'
+HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+HTTPCACHE_ENABLED = True
+HTTPCACHE_EXPIRATION_SECS = 0  # Never Expire
+HTTPCACHE_DIR = 'httpcache'
+HTTPCACHE_IGNORE_HTTP_CODES = [301, 302, 404]
+HTTPCACHE_IGNORE_MISSING = False
+HTTPCACHE_IGNORE_RESPONSE_CACHE_CONTROLS = ["no-cache", "no-store"]
+
 
 DEPTH_LIMIT = 0

@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'app',
     'rest_framework',
     'django_extensions',
+    'ecommerce_scraper'
 ]
 
 MIDDLEWARE = [

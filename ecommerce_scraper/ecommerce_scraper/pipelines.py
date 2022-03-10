@@ -4,111 +4,76 @@
 # See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 
 
-import json
-from app.models import ProductVendorDetails, Product, Vendor
 from django.db import transaction
-from .clean_data import format_price
-# useful for handling different item types with a single interface
-from itemadapter import ItemAdapter
+from scrapy.exceptions import DropItem
+from ecommerce_scraper.ecommerce_scraper.factories import make_info_merger, make_extractor, make_comparator
+from ecommerce_scraper.ecommerce_scraper.entity_managers import ProductVendorDetailsManager, ProductManager
 
 
-class EcommerceScraperPipeline:
-
-    @staticmethod
-    def update_product(product, item):
-        # Todo update product, in a more fancy way
-        if not product.name and item.get('name'):
-            product.name = item.get('name')
-
-        if not product.ref and item.get('reference'):
-            product.name = item.get('reference')
-
-        if not product.image_url and item.get('image'):
-            product.name = item.get('image')
-
-        specs = product.characteristics
-        for field in specs:
-            if not specs[field] and item.get(field):
-                specs[field] = item.get(field)
-
-    @staticmethod
-    def update_product_vendor_details(product_vendor_details, item):
-        #Todo update remaoning fields
-
-        product_vendor_details.product_url = item['url']
-        product_vendor_details.warranty = item['warranty']
-        product_vendor_details.registered_prices.append(item['price'])
-
+class InfoExtractionPipeline:
 
     def process_item(self, item, spider):
-        adapter = ItemAdapter(item)
-        adapter['price'] = format_price(adapter['price'], "TND", "DT")
+        extractor = make_extractor(item['category'])
+        info = extractor.extract(item['description'])
+        self.fill_item_with_extracted_info(item, info)
+        return item
+
+    def fill_item_with_extracted_info(self, item, info):
+        if info.get("warranty"):
+            item["warranty"] = info.pop("warranty")
+        item["characteristics"] = info
+
+
+class ProductPipeline:
+    def process_item(self, item, spider):
+        product = self._process_item_to_product(item)
+        item['product'] = product
+        return item
+
+    @transaction.atomic()
+    def _process_item_to_product(self, item):
+        product = self._get_product_corresponding_to_item(item)
+        if not product:
+            return ProductManager.create_new_product(item)
+        self._merge_existing_product_with_item(product, item)
+        return product
+
+    def _get_product_corresponding_to_item(self, item):
+        candidate_products = ProductManager.get_similar_products(item)
+        product_comparator = make_comparator(["category"])
+        for candidate_product in candidate_products:
+            if product_comparator.compare(ProductManager.to_dict(candidate_product), item):
+                return candidate_product
+
+    def _merge_existing_product_with_item(self, product, item):
+        merger = make_info_merger(item['category'])
+        item = merger.merge(ProductManager.to_dict(product), item)
+        ProductManager.update_with_item(product, item)
+
+
+class ProductVendorDetailsPipeline:
+    def __init__(self, vendor):
+        self._vendor = vendor
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        return cls(crawler.spider.vendor)
+
+    def process_item(self, item, spider):
+        if not item['product']:
+            raise DropItem('No corresponding product in database')
 
         with transaction.atomic():
-            product = Product.objects.filter(
-                ref=adapter['reference'],
-                # characteristics={'ram': adapter['ram'], 'ssd': adapter['ssd'], 'hard_disk': adapter['hard_disk']}
-            )
+            self._process_item_to_product_vendor_details(item)
 
-            if product:
-                product = product[0]
-                self.update_product(product, adapter)
-            else:
-                product = Product(
-                    name=adapter['name'],
-                    ref=adapter['reference'],
-                    category=adapter['category'],
-                    image_url=adapter['image'],
-                    minimum_price=adapter['price'],
-                    characteristics={
-                        'os': adapter.get('os'),
-                        'cpu': adapter.get('cpu'),
-                        'cpu_series': adapter.get('cpu_series'),
-                        'cpu_frequency': adapter.get('cpu_frequency'),
-                        'cpu_gen': adapter.get('cpu_gen'),
-                        'cpu_cache': adapter.get('cpu_cache'),
-                        'ram': adapter.get('ram'),
-                        'ram_type': adapter.get('ram_type'),
-                        'screen_size': adapter.get('screen_size'),
-                        'screen_resolution': adapter.get('screen_resolution'),
-                        'screen_frequency': adapter.get('screen_frequency'),
-                        'hard_disk': adapter.get('hard_disk'),
-                        'ssd': adapter.get('ssd'),
-                        'gpu': adapter.get('gpu'),
-                        'color': adapter.get('color'),
-                    }
-                )
-            product.save()
-
-            vendor = Vendor.objects.get(name=spider.name)
-            product_vendor_details = product.details.filter(vendor=vendor)  #Todo find out if this is optimal or not
-            if product_vendor_details:
-                product_vendor_details = product_vendor_details[0]
-                self.update_product_vendor_details(product_vendor_details, adapter)
-
-            else:
-                product_vendor_details = ProductVendorDetails(
-                    product=product,
-                    vendor=vendor,
-                    product_url=adapter['url'],
-                    warranty=adapter.get('warranty'),
-                    registered_prices=[adapter['price']],
-                )
-            product_vendor_details.save()
         return item
 
+    def _process_item_to_product_vendor_details(self, item):
+        product = item['product']
+        product_vendor_details = (ProductVendorDetailsManager.
+                                  get_product_vendor_details(product, self._vendor))
+        if not product_vendor_details:
+            return ProductVendorDetailsManager.create_product_vendor_details(item, self._vendor)
 
-class JsonWriterPipeline:
+        return ProductVendorDetailsManager.update_with_item(product_vendor_details, item)
 
-    def open_spider(self, spider):
-        self.file = open(f'{spider.name}_items.jl', 'w')
-
-
-    def close_spider(self, spider):
-        self.file.close()
-
-    def process_item(self, item, spider):
-
-        line = json.dumps(ItemAdapter(item).asdict()) + "\n"
-        self.file.write(line)
-        return item
