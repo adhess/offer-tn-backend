@@ -20,7 +20,7 @@ class Command(BaseCommand):
         """
         save all categories and filters
         """
-        category = Category(name=data['name'], icon=data['icon'], isActive=data['is_active'], parent=parent)
+        category = Category(name=data['name'], icon=data['icon'], is_active=data['is_active'], parent=parent)
         category.save()
         filter_ = Filter(fields=[
             'screen_size',
