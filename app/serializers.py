@@ -5,10 +5,10 @@ from rest_framework_recursive.fields import RecursiveField
 
 class CategorySerializer(serializers.ModelSerializer):
     children = RecursiveField(many=True)
-
+    isActive = serializers.BooleanField(source='is_active')
     class Meta:
         model = Category
-        fields = ['id', 'name', 'children', 'icon', 'is_active']
+        fields = ['id', 'name', 'children', 'icon', 'isActive']
 
 
 class VendorSerializer(serializers.ModelSerializer):
