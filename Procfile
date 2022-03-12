@@ -1,2 +1,2 @@
-release: python manage.py migrate && python manage.py populate_db && cd ecommerce_scraper && python run.py
+release: python manage.py migrate && python manage.py loaddata */fixtures/*.json
 web: gunicorn backend.wsgi
